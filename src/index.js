@@ -1,75 +1,60 @@
-import "./styles.css";
+import Project from "./models/Project.js";
+import ProjectPrinter from "./services/ProjectPrinter.js";
+import TodoManager from "./models/TodoManager.js";
 
-class Project {
-  constructor(title) {
-    this.title = title;
-  }
+const todoManager = new TodoManager();
 
-  project = [];
+const myProject = new Project("Personal Development Project", todoManager);
 
-  createTodo(title, description) {
-    const newTodo = new Todo(title, description);
-    newTodo.setPriority(2);
-    newTodo.setNotes("");
-    newTodo.setDueDate("");
+todoManager.createTodo(
+  "Learn JavaScript",
+  "Complete JavaScript course on The Odin Project"
+);
+todoManager.createTodo("Workout Routine", "Create a 4-week workout plan");
+todoManager.createTodo(
+  "Grocery Shopping",
+  "Prepare shopping list for the week"
+);
+todoManager.createTodo("Plan Vacation", "Research and book a trip");
+todoManager.createTodo("Read a Book", "Finish reading a new novel");
 
-    this.project.push(newTodo);
-  }
+const todo1 = todoManager.getTodos()[0];
+todo1.addChecklistItem("Complete DOM manipulation section");
+todo1.addChecklistItem("Build a project using JS");
 
-  printTodos = () => {
-    console.log(this.title);
+const todo2 = todoManager.getTodos()[1];
+todo2.addChecklistItem("Design workout schedule");
+todo2.addChecklistItem("Buy gym equipment");
+todo2.addChecklistItem("Track progress");
 
-    this.project.map((todo, i) => {
-      console.log(`${i}. ${todo.title}`);
-    });
-  };
-}
+const todo3 = todoManager.getTodos()[2];
+todo3.addChecklistItem("Create meal plan");
+todo3.addChecklistItem("List groceries for each meal");
+todo3.addChecklistItem("Find discounts");
 
-class Todo {
-  constructor(title, description) {
-    this.title = title;
-    this.description = description;
-  }
+const todo4 = todoManager.getTodos()[3];
+todo4.addChecklistItem("Research destinations");
+todo4.addChecklistItem("Check flight prices");
+todo4.addChecklistItem("Book hotel");
 
-  isComplete = false;
-  checklists = [];
+const todo5 = todoManager.getTodos()[4];
+todo5.addChecklistItem("Read 50 pages per day");
+todo5.addChecklistItem("Write notes for each chapter");
 
-  setPriority = (priority) => {
-    const priorities = ["urgent", "important", "normal", "low"];
-    this.priority = priorities[priority];
-  };
+todo1.setPriority(1); // Important
+todo2.setPriority(2); // Normal
+todo3.setPriority(0); // Urgent
+todo4.setPriority(3); // Low
+todo5.setPriority(2); // Normal
 
-  setDueDate = (date) => {
-    this.dueDate = new Date(date);
-  };
+todo1.getChecklists()[0].setPriority(0); // Urgent checklist item
+todo2.getChecklists()[1].setPriority(1); // Important checklist item
+todo3.getChecklists()[2].setPriority(2); // Normal checklist item
+todo4.getChecklists()[0].setPriority(1); // Important checklist item
+todo5.getChecklists()[1].setPriority(3); // Low checklist item
 
-  setNotes = (notes) => {
-    this.notes = notes;
-  };
+todo1.getChecklists()[0].toggleComplete();
+todo2.getChecklists()[1].toggleComplete();
+todo4.getChecklists()[2].toggleComplete();
 
-  addChecklist = (title) => {
-    this.checklists.push(new Checklist(title));
-  };
-
-  toggleComplete = () => {
-    this.isComplete = !this.isComplete;
-  };
-}
-
-class Checklist {
-  constructor(title) {
-    this.title = title;
-  }
-
-  isComplete = false;
-}
-
-const defaultProject = new Project("default");
-
-defaultProject.createTodo("Brush Teeth", "");
-
-defaultProject.project[0].addChecklist("To do 1");
-defaultProject.project[0].toggleComplete();
-
-console.log(defaultProject);
-defaultProject.printTodos();
+ProjectPrinter.print(myProject);
