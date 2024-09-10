@@ -7,8 +7,8 @@ export default class Todo {
   constructor(title, description, checklistManager = new ChecklistManager()) {
     this.title = title;
     this.description = description;
-    this.notes = this.setNotes("");
-    this.dueDate = this.setDueDate("");
+    this.notes = "";
+    this.dueDate = "";
 
     this.checklistManager = checklistManager;
     this.completable = new Completable();
