@@ -4,6 +4,7 @@ import Prioritizable from "./Prioritizable.js";
 export default class Checklist {
   constructor(title) {
     this.title = title;
+
     this.completable = new Completable();
     this.prioritizable = new Prioritizable();
   }

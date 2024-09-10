@@ -5,9 +5,6 @@ export default class TodoManager {
 
   createTodo(title, description) {
     const newTodo = new Todo(title, description);
-    newTodo.setPriority(2);
-    newTodo.setNotes("");
-    newTodo.setDueDate("");
 
     this.todos.push(newTodo);
   }

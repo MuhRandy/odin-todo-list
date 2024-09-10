@@ -1,6 +1,6 @@
 export default class Prioritizable {
   constructor() {
-    this.priority = null;
+    this.priority = this.setPriority(2);
   }
 
   setPriority(priority) {

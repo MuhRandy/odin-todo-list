@@ -7,7 +7,6 @@ export default class ChecklistManager {
 
   addChecklistItem(title) {
     const newChecklist = new Checklist(title);
-    newChecklist.setPriority(2);
 
     this.checklists.push(newChecklist);
   }
