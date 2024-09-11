@@ -1,7 +1,7 @@
 export default class Project {
-  constructor(title, todoManager) {
+  constructor(title, todoManager, id = new Date().getTime()) {
     this.title = title;
-    this.id = new Date().getTime();
+    this.id = id;
     this.todoManager = todoManager;
   }
 

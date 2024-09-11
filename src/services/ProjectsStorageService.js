@@ -40,7 +40,7 @@ export default class ProjectsStorageService {
 
     loadedProjects?.forEach((project) => {
       const todoManager = new TodoManager();
-      projects.push(new Project(project.title, todoManager));
+      projects.push(new Project(project.title, todoManager, project.id));
 
       project.todos.forEach((todo, i) => {
         const checklistManager = new ChecklistManager();
