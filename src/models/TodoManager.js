@@ -1,10 +1,13 @@
+import ChecklistManager from "./ChecklistManager.js";
 import Todo from "./Todo.js";
 
 export default class TodoManager {
-  todos = [];
+  constructor() {
+    this.todos = [];
+  }
 
-  createTodo(title, description) {
-    const newTodo = new Todo(title, description);
+  createTodo(title, description, checklistManager = new ChecklistManager()) {
+    const newTodo = new Todo(title, description, checklistManager);
 
     this.todos.push(newTodo);
   }

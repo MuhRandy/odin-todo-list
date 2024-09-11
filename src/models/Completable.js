@@ -1,6 +1,6 @@
 export default class Completable {
-  constructor() {
-    this.isComplete = false;
+  constructor(isComplete = false) {
+    this.isComplete = isComplete;
   }
 
   toggleComplete() {

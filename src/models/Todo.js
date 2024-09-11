@@ -1,10 +1,9 @@
 import DateValidator from "../services/DateValidator.js";
-import ChecklistManager from "./ChecklistManager";
 import Completable from "./Completable.js";
 import Prioritizable from "./Prioritizable.js";
 
 export default class Todo {
-  constructor(title, description, checklistManager = new ChecklistManager()) {
+  constructor(title, description, checklistManager) {
     this.title = title;
     this.description = description;
     this.notes = "";

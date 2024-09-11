@@ -1,8 +1,7 @@
-import TodoManager from "./TodoManager";
-
 export default class Project {
-  constructor(title, todoManager = new TodoManager()) {
+  constructor(title, todoManager) {
     this.title = title;
+    this.id = new Date().getTime();
     this.todoManager = todoManager;
   }
 
