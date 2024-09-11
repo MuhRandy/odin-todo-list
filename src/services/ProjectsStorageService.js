@@ -51,8 +51,9 @@ export default class ProjectsStorageService {
         currentTodo.setDueDate(todo.dueDate);
         currentTodo.prioritizable = new Prioritizable(todo.priority);
         currentTodo.completable = new Completable(todo.isComplete);
-        currentTodo.getChecklists().forEach((checklist, j) => {
-          todo.addChecklistItem(checklist.title);
+
+        todo.checklists.forEach((checklist, j) => {
+          currentTodo.addChecklistItem(checklist.title);
 
           const currentChecklist = checklistManager.getChecklists()[j];
           currentChecklist.prioritizable = new Prioritizable(
