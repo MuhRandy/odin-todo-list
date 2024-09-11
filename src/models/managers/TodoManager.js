@@ -1,5 +1,5 @@
-import ChecklistManager from "./ChecklistManager.js";
-import Todo from "./Todo.js";
+import ChecklistManager from "./ChecklistManager";
+import Todo from "../entities/Todo";
 
 export default class TodoManager {
   constructor() {

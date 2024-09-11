@@ -1,5 +1,5 @@
-import ProjectsStorageService from "../services/ProjectsStorageService";
-import Project from "./Project";
+import ProjectsStorageService from "../../services/ProjectsStorageService";
+import Project from "../entities/Project";
 import TodoManager from "./TodoManager";
 
 export default class ProjectManager {

@@ -1,9 +1,9 @@
 import LocalStorageService from "./LocalStorageService";
-import ChecklistManager from "../models/ChecklistManager";
-import Completable from "../models/Completable";
-import Prioritizable from "../models/Prioritizable";
-import Project from "../models/Project";
-import TodoManager from "../models/TodoManager";
+import ChecklistManager from "../models/managers/ChecklistManager";
+import TodoManager from "../models/managers/TodoManager";
+import Completable from "../models/behaviors/Completable";
+import Prioritizable from "../models/behaviors/Prioritizable";
+import Project from "../models/entities/Project";
 
 export default class ProjectsStorageService {
   static save(projects) {

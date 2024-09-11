@@ -1,4 +1,4 @@
-import Checklist from "./Checklist.js";
+import Checklist from "../entities/Checklist";
 
 export default class ChecklistManager {
   constructor() {

@@ -1,6 +1,6 @@
-import ProjectPrinter from "./services/ProjectPrinter.js";
-import TodoManager from "./models/TodoManager.js";
-import ProjectManager from "./models/ProjectManager.js";
+import ProjectPrinter from "./services/ProjectPrinter";
+import TodoManager from "./models/managers/TodoManager";
+import ProjectManager from "./models/managers/ProjectManager";
 
 const projectManager = new ProjectManager();
 

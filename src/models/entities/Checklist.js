@@ -1,5 +1,5 @@
-import Completable from "./Completable.js";
-import Prioritizable from "./Prioritizable.js";
+import Completable from "../behaviors/Completable";
+import Prioritizable from "../behaviors/Prioritizable";
 
 export default class Checklist {
   constructor(title) {
