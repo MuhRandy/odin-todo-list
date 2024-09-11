@@ -1,10 +1,12 @@
-import Project from "./models/Project.js";
 import ProjectPrinter from "./services/ProjectPrinter.js";
 import TodoManager from "./models/TodoManager.js";
+import ProjectManager from "./models/ProjectManager.js";
+
+const projectManager = new ProjectManager();
 
 const todoManager = new TodoManager();
 
-const myProject = new Project("Personal Development Project", todoManager);
+projectManager.createProject("Personal Development Project", todoManager);
 
 todoManager.createTodo(
   "Learn JavaScript",
@@ -57,4 +59,8 @@ todo1.getChecklists()[0].toggleComplete();
 todo2.getChecklists()[1].toggleComplete();
 todo4.getChecklists()[2].toggleComplete();
 
-ProjectPrinter.print(myProject);
+projectManager.saveProjects();
+
+projectManager.projects.forEach((project) => {
+  ProjectPrinter.print(project);
+});
