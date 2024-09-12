@@ -39,4 +39,23 @@ export default class ChecklistManager {
   getChecklists() {
     return this.checklists;
   }
+
+  getChecklist(id) {
+    Checker.isItemExist(this.checklists, id);
+
+    return this.checklists.filter((checklist) => checklist.getId() === id)[0];
+  }
+
+  getChecklistData(id) {
+    const checklist = this.getChecklist(id);
+
+    return {
+      title: checklist.title,
+      id: checklist.getId(),
+      todoId: checklist.getTodoId(),
+      projectId: checklist.getProjectId(),
+      isComplete: checklist.isComplete(),
+      priority: checklist.getPriority(),
+    };
+  }
 }

@@ -7,18 +7,39 @@ generateFakeDataToLocalStorage();
 
 ProjectManager.load();
 
-// // delete Mobile App Development Project
-// ProjectManager.deleteProject(4827365893012);
+// // Mobile App Development Project
+// const mobileAppDevId = 4827365893012;
 
-// // delete todo Learn React on Web Development Project
-// ProjectManager.deleteTodo(2398745234897, 123456790);
+// Project testing
+// ProjectManager.deleteProject(mobileAppDevId);
+// console.log(ProjectManager.getProjectData(mobileAppDevId));
 
-// // delete Learn Git rebasing checklist from todo Improve Git skills on Web Development Project
-// ProjectManager.deleteChecklist(2398745234897, 123456792, 987654328);
+// Todo testing
+// Web Development Project
+const webDevId = 2398745234897;
+
+// Todo Learn React
+const learnReactId = 123456790;
+// ProjectManager.deleteTodo(webDevId, learnReactId);
+// console.log(ProjectManager.getTodoData(webDevId, learnReactId));
+
+// Checklist testing
+// Improve Git skills
+const improveGitSkillsId = 123456792;
+// Learn Git rebasing
+const learnGitRebasingId = 987654328;
+// ProjectManager.deleteChecklist(webDevId, improveGitSkillsId, learnGitRebasingId);
+// console.log(
+//   ProjectManager.getChecklistData(
+//     webDevId,
+//     improveGitSkillsId,
+//     learnGitRebasingId
+//   )
+// );
 
 ProjectManager.save();
 
-ProjectManager.printProjects();
+// ProjectManager.printProjects();
 
 function generateFakeData() {
   const webDevelopmentProjectObj = {

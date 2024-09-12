@@ -34,6 +34,21 @@ export default class TodoManager {
     return this.todos.filter((todo) => todo.getId() === id)[0];
   }
 
+  getTodoData(id) {
+    const todo = this.getTodo(id);
+
+    return {
+      title: todo.title,
+      id: todo.getId(),
+      projectId: todo.getProjectId(),
+      description: todo.description,
+      notes: todo.getNotes(),
+      dueDate: todo.getDueDate(),
+      isComplete: todo.isComplete(),
+      priority: todo.getPriority(),
+    };
+  }
+
   getTodos() {
     return this.todos;
   }

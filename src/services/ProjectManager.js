@@ -20,28 +20,23 @@ export default class ProjectManager {
 
   static save() {
     const savedProjects = this.projects.map((project) => {
+      const projectData = this.getProjectData(project.getId());
+
       return {
-        title: project.title,
-        id: project.getId(),
+        ...projectData,
         todos: project.getTodos().map((todo) => {
+          const todoData = this.getTodoData(project.getId(), todo.getId());
+
           return {
-            title: todo.title,
-            id: todo.getId(),
-            projectId: todo.getProjectId(),
-            description: todo.description,
-            notes: todo.getNotes(),
-            dueDate: todo.getDueDate(),
-            isComplete: todo.isComplete(),
-            priority: todo.getPriority(),
+            ...todoData,
             checklists: todo.getChecklists().map((checklist) => {
-              return {
-                title: checklist.title,
-                id: checklist.getId(),
-                todoId: checklist.getTodoId(),
-                projectId: checklist.getProjectId(),
-                isComplete: checklist.isComplete(),
-                priority: checklist.getPriority(),
-              };
+              const checklistData = this.getChecklistData(
+                project.getId(),
+                todo.getId(),
+                checklist.getId()
+              );
+
+              return checklistData;
             }),
           };
         }),
@@ -68,6 +63,30 @@ export default class ProjectManager {
     Checker.isProjectExist(targetProject, id);
 
     return targetProject[0];
+  }
+
+  static getProjectData(id) {
+    const project = this.getProject(id);
+
+    return {
+      title: project.title,
+      id: project.getId(),
+    };
+  }
+
+  static getTodoData(projectId, id) {
+    const todoManager = this.getProject(projectId).getTodoManager();
+
+    return todoManager.getTodoData(id);
+  }
+
+  static getChecklistData(projectId, todoId, id) {
+    const checklistManager = this.getProject(projectId)
+      .getTodoManager()
+      .getTodo(todoId)
+      .getChecklistManager();
+
+    return checklistManager.getChecklistData(id);
   }
 
   static deleteProject(id) {
