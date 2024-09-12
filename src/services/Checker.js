@@ -1,4 +1,8 @@
-export default class MessageLogService {
+export default class Checker {
+  static isDateValid(date) {
+    return !isNaN(new Date(date).getTime());
+  }
+
   static isProjectExist(targetProject, id) {
     if (targetProject.length === 0)
       throw new Error("No such project with id " + id);

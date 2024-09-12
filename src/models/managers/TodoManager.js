@@ -1,6 +1,6 @@
 import Todo from "../entities/Todo";
 import ProjectManager from "../../services/ProjectManager";
-import MessageLogService from "../../services/MessageLogService";
+import Checker from "../../services/Checker";
 
 export default class TodoManager {
   #projectId;
@@ -21,7 +21,7 @@ export default class TodoManager {
   }
 
   deleteTodo(id) {
-    MessageLogService.isItemExist(this.todos, id);
+    Checker.isItemExist(this.todos, id);
 
     this.todos = this.todos.filter((todo) => todo.getId() !== id);
 
@@ -29,7 +29,7 @@ export default class TodoManager {
   }
 
   getTodo(id) {
-    MessageLogService.isItemExist(this.todos, id);
+    Checker.isItemExist(this.todos, id);
 
     return this.todos.filter((todo) => todo.getId() === id)[0];
   }

@@ -3,7 +3,7 @@ import Completable from "../models/behaviors/Completable";
 import Prioritizable from "../models/behaviors/Prioritizable";
 import Project from "../models/entities/Project";
 import ProjectsPrinter from "./ProjectsPrinter";
-import MessageLogService from "./MessageLogService";
+import Checker from "./Checker";
 
 export default class ProjectManager {
   static projects = [];
@@ -65,7 +65,7 @@ export default class ProjectManager {
     const targetProject = this.projects.filter(
       (project) => project.getId() === id
     );
-    MessageLogService.isProjectExist(targetProject, id);
+    Checker.isProjectExist(targetProject, id);
 
     return targetProject[0];
   }

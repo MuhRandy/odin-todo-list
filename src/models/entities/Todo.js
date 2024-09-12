@@ -1,4 +1,4 @@
-import DateValidator from "../../services/DateValidator";
+import Checker from "../../services/Checker";
 import Completable from "../behaviors/Completable";
 import Prioritizable from "../behaviors/Prioritizable";
 import ChecklistManager from "../managers/ChecklistManager";
@@ -24,7 +24,7 @@ export default class Todo {
   }
 
   setDueDate(date) {
-    DateValidator.isDateValid(date) ? (this.#dueDate = new Date(date)) : "";
+    Checker.isDateValid(date) ? (this.#dueDate = new Date(date)) : "";
   }
 
   setNotes(notes) {

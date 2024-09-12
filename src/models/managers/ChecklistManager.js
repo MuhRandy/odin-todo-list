@@ -1,4 +1,4 @@
-import MessageLogService from "../../services/MessageLogService";
+import Checker from "../../services/Checker";
 import ProjectManager from "../../services/ProjectManager";
 import Checklist from "../entities/Checklist";
 
@@ -27,7 +27,7 @@ export default class ChecklistManager {
   }
 
   deleteChecklist(id) {
-    MessageLogService.isItemExist(this.checklists, id);
+    Checker.isItemExist(this.checklists, id);
 
     this.checklists = this.checklists.filter(
       (checklist) => checklist.getId() !== id
