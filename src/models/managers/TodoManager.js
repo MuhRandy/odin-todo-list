@@ -1,5 +1,5 @@
 import Todo from "../entities/Todo";
-import ProjectsStorageService from "../../services/ProjectsStorageService";
+import ProjectManager from "../../services/ProjectManager";
 import MessageLogService from "../../services/MessageLogService";
 
 export default class TodoManager {
@@ -15,7 +15,7 @@ export default class TodoManager {
 
     this.todos.push(newTodo);
 
-    ProjectsStorageService.save();
+    ProjectManager.save();
 
     return newTodo;
   }
@@ -25,7 +25,7 @@ export default class TodoManager {
 
     this.todos = this.todos.filter((todo) => todo.getId() !== id);
 
-    ProjectsStorageService.save();
+    ProjectManager.save();
   }
 
   getTodo(id) {

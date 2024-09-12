@@ -5,7 +5,7 @@ import Project from "../models/entities/Project";
 import ProjectsPrinter from "./ProjectsPrinter";
 import MessageLogService from "./MessageLogService";
 
-export default class ProjectsStorageService {
+export default class ProjectManager {
   static projects = [];
 
   static createProject(title, id = new Date().getTime()) {

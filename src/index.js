@@ -1,21 +1,24 @@
 import LocalStorageService from "./services/LocalStorageService";
 import Prioritizable from "./models/behaviors/Prioritizable";
 import Completable from "./models/behaviors/Completable";
-import ProjectsStorageService from "./services/ProjectsStorageService";
+import ProjectManager from "./services/ProjectManager";
 
 generateFakeDataToLocalStorage();
 
-ProjectsStorageService.load();
+ProjectManager.load();
 
-// ProjectsStorageService.deleteProject(4827365893012);
+// // delete Mobile App Development Project
+// ProjectManager.deleteProject(4827365893012);
 
-// ProjectsStorageService.deleteTodo(2398745234897, 123456790);
+// // delete todo Learn React on Web Development Project
+// ProjectManager.deleteTodo(2398745234897, 123456790);
 
-// ProjectsStorageService.deleteChecklist(2398745234897, 123456792, 987654328);
+// // delete Learn Git rebasing checklist from todo Improve Git skills on Web Development Project
+// ProjectManager.deleteChecklist(2398745234897, 123456792, 987654328);
 
-ProjectsStorageService.save();
+ProjectManager.save();
 
-ProjectsStorageService.printProjects();
+ProjectManager.printProjects();
 
 function generateFakeData() {
   const webDevelopmentProjectObj = {
@@ -133,7 +136,7 @@ function generateFakeData() {
       },
     ],
   };
-  const WDProject = ProjectsStorageService.createProject(
+  const WDProject = ProjectManager.createProject(
     webDevelopmentProjectObj.title
   );
 
@@ -161,7 +164,7 @@ function generateFakeData() {
     });
   });
 
-  ProjectsStorageService.printProjects();
+  ProjectManager.printProjects();
 }
 
 function generateFakeDataToLocalStorage() {

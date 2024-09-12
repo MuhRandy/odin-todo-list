@@ -1,5 +1,5 @@
 import MessageLogService from "../../services/MessageLogService";
-import ProjectsStorageService from "../../services/ProjectsStorageService";
+import ProjectManager from "../../services/ProjectManager";
 import Checklist from "../entities/Checklist";
 
 export default class ChecklistManager {
@@ -21,7 +21,7 @@ export default class ChecklistManager {
 
     this.checklists.push(newChecklist);
 
-    ProjectsStorageService.save();
+    ProjectManager.save();
 
     return newChecklist;
   }
@@ -33,7 +33,7 @@ export default class ChecklistManager {
       (checklist) => checklist.getId() !== id
     );
 
-    ProjectsStorageService.save();
+    ProjectManager.save();
   }
 
   getChecklists() {
