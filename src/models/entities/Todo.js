@@ -1,15 +1,20 @@
 import DateValidator from "../../services/DateValidator";
 import Completable from "../behaviors/Completable";
 import Prioritizable from "../behaviors/Prioritizable";
+import ChecklistManager from "../managers/ChecklistManager";
 
 export default class Todo {
-  constructor(title, description, checklistManager) {
+  #id;
+  #projectId;
+  #notes = "";
+  #dueDate = "";
+  constructor(title, description, projectId, id) {
     this.title = title;
     this.description = description;
-    this.notes = "";
-    this.dueDate = "";
+    this.#id = id;
+    this.#projectId = projectId;
 
-    this.checklistManager = checklistManager;
+    this.checklistManager = new ChecklistManager(this.#projectId, this.#id);
     this.completable = new Completable();
     this.prioritizable = new Prioritizable();
   }
@@ -19,11 +24,11 @@ export default class Todo {
   }
 
   setDueDate(date) {
-    DateValidator.isDateValid(date) ? (this.dueDate = new Date(date)) : "";
+    DateValidator.isDateValid(date) ? (this.#dueDate = new Date(date)) : "";
   }
 
   setNotes(notes) {
-    this.notes = notes;
+    this.#notes = notes;
   }
 
   toggleComplete() {
@@ -34,8 +39,8 @@ export default class Todo {
     return this.completable.isComplete;
   }
 
-  addChecklistItem(title) {
-    this.checklistManager.addChecklistItem(title);
+  addChecklistItem(title, id = new Date().getTime()) {
+    return this.checklistManager.addChecklistItem(title, id);
   }
 
   getChecklists() {
@@ -44,6 +49,26 @@ export default class Todo {
 
   getPriority() {
     return this.prioritizable.getPriority();
+  }
+
+  getNotes() {
+    return this.#notes;
+  }
+
+  getDueDate() {
+    return this.#dueDate;
+  }
+
+  getId() {
+    return this.#id;
+  }
+
+  getProjectId() {
+    return this.#projectId;
+  }
+
+  getChecklistManager() {
+    return this.checklistManager;
   }
 
   toggleChecklistItem(index) {

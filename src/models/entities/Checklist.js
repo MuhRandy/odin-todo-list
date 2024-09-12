@@ -2,8 +2,14 @@ import Completable from "../behaviors/Completable";
 import Prioritizable from "../behaviors/Prioritizable";
 
 export default class Checklist {
-  constructor(title) {
+  #id;
+  #todoId;
+  #projectId;
+  constructor(title, projectId, todoId, id) {
     this.title = title;
+    this.#projectId = projectId;
+    this.#todoId = todoId;
+    this.#id = id;
 
     this.completable = new Completable();
     this.prioritizable = new Prioritizable();
@@ -23,5 +29,17 @@ export default class Checklist {
 
   getPriority() {
     return this.prioritizable.getPriority();
+  }
+
+  getId() {
+    return this.#id;
+  }
+
+  getTodoId() {
+    return this.#todoId;
+  }
+
+  getProjectId() {
+    return this.#projectId;
   }
 }
