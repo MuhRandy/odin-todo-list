@@ -500,7 +500,7 @@ export default class Tester {
 
     const learnReactTodo = webDevProject.todos[1];
 
-    return learnReactTodo;
+    return { ...learnReactTodo, projectTitle: webDevProject.title };
   }
 
   static #getChecklistTestData() {
@@ -510,7 +510,11 @@ export default class Tester {
 
     const learnGitRebasingChecklist = improveGitSkillsTodo.checklists[0];
 
-    return learnGitRebasingChecklist;
+    return {
+      ...learnGitRebasingChecklist,
+      projectTitle: webDevProject.title,
+      todoTitle: improveGitSkillsTodo.title,
+    };
   }
 
   static generateDataToLocalStorage() {
@@ -548,19 +552,27 @@ export default class Tester {
   }
 
   static testDeleteData() {
+    const projectData = this.#getProjectTestData();
+    const todoData = this.#getTodoTestData();
+    const checklistData = this.#getChecklistTestData();
+
+    console.log(`
+        This test will delete:
+         - Project "${projectData.title}"
+         - Todo "${todoData.title}" in Project "${todoData.projectTitle}"
+         - Checklist "${checklistData.title}" in Todo "${checklistData.todoTitle}" in Project "${checklistData.projectTitle}"
+        `);
+
     this.generateDataToLocalStorage();
 
     ProjectManager.load();
 
-    ProjectManager.deleteProject(this.#getProjectTestData().id);
-    ProjectManager.deleteTodo(
-      this.#getTodoTestData().projectId,
-      this.#getTodoTestData().id
-    );
+    ProjectManager.deleteProject(projectData.id);
+    ProjectManager.deleteTodo(todoData.projectId, todoData.id);
     ProjectManager.deleteChecklist(
-      this.#getChecklistTestData().projectId,
-      this.#getChecklistTestData().todoId,
-      this.#getChecklistTestData().id
+      checklistData.projectId,
+      checklistData.todoId,
+      checklistData.id
     );
 
     ProjectManager.save();
@@ -569,25 +581,29 @@ export default class Tester {
   }
 
   static testGetData() {
+    const projectData = this.#getProjectTestData();
+    const todoData = this.#getTodoTestData();
+    const checklistData = this.#getChecklistTestData();
+
+    console.log(`
+        This test will get data from:
+         - Project "${projectData.title}"
+         - Todo "${todoData.title}" in Project "${todoData.projectTitle}"
+         - Checklist "${checklistData.title}" in Todo "${checklistData.todoTitle}" in Project "${checklistData.projectTitle}"
+        `);
+
     this.generateDataToLocalStorage();
 
     ProjectManager.load();
 
-    console.log(ProjectManager.getProjectData(this.#getProjectTestData().id));
-    console.log(
-      ProjectManager.getTodoData(
-        this.#getTodoTestData().projectId,
-        this.#getTodoTestData().id
-      )
-    );
+    console.log(ProjectManager.getProjectData(projectData.id));
+    console.log(ProjectManager.getTodoData(todoData.projectId, todoData.id));
     console.log(
       ProjectManager.getChecklistData(
-        this.#getChecklistTestData().projectId,
-        this.#getChecklistTestData().todoId,
-        this.#getChecklistTestData().id
+        checklistData.projectId,
+        checklistData.todoId,
+        checklistData.id
       )
     );
-
-    ProjectManager.save();
   }
 }
