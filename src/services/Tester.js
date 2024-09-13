@@ -1,5 +1,3 @@
-import Completable from "../models/behaviors/Completable";
-import Prioritizable from "../models/behaviors/Prioritizable";
 import LocalStorageService from "./LocalStorageService";
 import ProjectManager from "./ProjectManager";
 
@@ -537,14 +535,14 @@ export default class Tester {
 
       currentTodo.setNotes(todo.notes);
       currentTodo.setDueDate(todo.dueDate);
-      currentTodo.prioritizable = new Prioritizable(todo.priority);
-      currentTodo.completable = new Completable(todo.isComplete);
+      currentTodo.setPriority(todo.priority);
+      currentTodo.setCompleteStatus(todo.isComplete);
 
       todo.checklists.forEach((checklist) => {
         const currentChecklist = currentTodo.addChecklistItem(checklist.title);
 
-        currentChecklist.prioritizable = new Prioritizable(checklist.priority);
-        currentChecklist.completable = new Completable(checklist.isComplete);
+        currentChecklist.setPriority(checklist.priority);
+        currentChecklist.setCompleteStatus(checklist.isComplete);
       });
     });
 
