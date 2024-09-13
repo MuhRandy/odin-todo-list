@@ -4,19 +4,29 @@ import Prioritizable from "../behaviors/Prioritizable";
 import ChecklistManager from "../managers/ChecklistManager";
 
 export default class Todo {
+  #title;
+  #description;
   #id;
   #projectId;
   #notes = "";
   #dueDate = "";
   constructor(title, description, projectId, id) {
-    this.title = title;
-    this.description = description;
+    this.#title = title;
+    this.#description = description;
     this.#id = id;
     this.#projectId = projectId;
 
     this.checklistManager = new ChecklistManager(this.#projectId, this.#id);
     this.completable = new Completable();
     this.prioritizable = new Prioritizable();
+  }
+
+  setTitle(newTitle) {
+    this.#title = newTitle;
+  }
+
+  setDescription(newDescription) {
+    this.#description = newDescription;
   }
 
   setPriority(priority) {
@@ -41,6 +51,14 @@ export default class Todo {
 
   addChecklistItem(title, id = new Date().getTime()) {
     return this.checklistManager.addChecklistItem(title, id);
+  }
+
+  getTitle() {
+    return this.#title;
+  }
+
+  getDescription() {
+    return this.#description;
   }
 
   getChecklists() {

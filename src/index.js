@@ -1,5 +1,5 @@
 import Tester from "./services/Tester";
 
-Tester.testGetData();
+// Tester.testGetData();
 
-// Tester.testDeleteData();
+Tester.testDeleteData();

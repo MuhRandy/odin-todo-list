@@ -50,7 +50,7 @@ export default class ChecklistManager {
     const checklist = this.getChecklist(id);
 
     return {
-      title: checklist.title,
+      title: checklist.getTitle(),
       id: checklist.getId(),
       todoId: checklist.getTodoId(),
       projectId: checklist.getProjectId(),

@@ -38,10 +38,10 @@ export default class TodoManager {
     const todo = this.getTodo(id);
 
     return {
-      title: todo.title,
+      title: todo.getTitle(),
       id: todo.getId(),
       projectId: todo.getProjectId(),
-      description: todo.description,
+      description: todo.getDescription(),
       notes: todo.getNotes(),
       dueDate: todo.getDueDate(),
       isComplete: todo.isComplete(),

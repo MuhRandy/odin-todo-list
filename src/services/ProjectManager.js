@@ -69,7 +69,7 @@ export default class ProjectManager {
     const project = this.getProject(id);
 
     return {
-      title: project.title,
+      title: project.getTitle(),
       id: project.getId(),
     };
   }
