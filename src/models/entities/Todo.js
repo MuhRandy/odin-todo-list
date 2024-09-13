@@ -12,13 +12,12 @@ export default class Todo {
   #dueDate = "";
   #completable = new Completable();
   #prioritizable = new Prioritizable();
+  #checklistManager = new ChecklistManager(this.#projectId, this.#id);
   constructor(title, description, projectId, id) {
     this.#title = title;
     this.#description = description;
     this.#id = id;
     this.#projectId = projectId;
-
-    this.checklistManager = new ChecklistManager(this.#projectId, this.#id);
   }
 
   setTitle(newTitle) {
@@ -58,7 +57,7 @@ export default class Todo {
   }
 
   addChecklistItem(title, id = new Date().getTime()) {
-    return this.checklistManager.addChecklistItem(title, id);
+    return this.#checklistManager.addChecklistItem(title, id);
   }
 
   getTitle() {
@@ -70,7 +69,7 @@ export default class Todo {
   }
 
   getChecklists() {
-    return this.checklistManager.getChecklists();
+    return this.#checklistManager.getChecklists();
   }
 
   getPriority() {
@@ -94,7 +93,7 @@ export default class Todo {
   }
 
   getChecklistManager() {
-    return this.checklistManager;
+    return this.#checklistManager;
   }
 
   toggleChecklistItem(index) {

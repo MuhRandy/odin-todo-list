@@ -3,10 +3,10 @@ import TodoManager from "../managers/TodoManager";
 export default class Project {
   #title;
   #id;
+  #todoManager = new TodoManager(id);
   constructor(title, id) {
     this.#title = title;
     this.#id = id;
-    this.todoManager = new TodoManager(id);
   }
 
   setTitle(newTitle) {
@@ -22,10 +22,10 @@ export default class Project {
   }
 
   getTodos() {
-    return this.todoManager.getTodos();
+    return this.#todoManager.getTodos();
   }
 
   getTodoManager() {
-    return this.todoManager;
+    return this.#todoManager;
   }
 }
