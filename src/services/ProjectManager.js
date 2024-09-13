@@ -4,12 +4,12 @@ import ProjectsPrinter from "./ProjectsPrinter";
 import Checker from "./Checker";
 
 export default class ProjectManager {
-  static projects = [];
+  static #projects = [];
 
   static createProject(title, id = new Date().getTime()) {
     const newProject = new Project(title, id);
 
-    this.projects.push(newProject);
+    this.#projects.push(newProject);
 
     this.save();
 
@@ -17,7 +17,7 @@ export default class ProjectManager {
   }
 
   static save() {
-    const savedProjects = this.projects.map((project) => {
+    const savedProjects = this.#projects.map((project) => {
       const projectData = this.getProjectData(project.getId());
 
       return {
@@ -51,11 +51,15 @@ export default class ProjectManager {
   }
 
   static printProjects() {
-    ProjectsPrinter.print(this.projects);
+    ProjectsPrinter.print(this.#projects);
+  }
+
+  static getProjects() {
+    return this.#projects;
   }
 
   static getProject(id) {
-    const targetProject = this.projects.filter(
+    const targetProject = this.#projects.filter(
       (project) => project.getId() === id
     );
     Checker.isProjectExist(targetProject, id);
@@ -90,7 +94,7 @@ export default class ProjectManager {
   static deleteProject(id) {
     this.getProject(id);
 
-    this.projects = this.projects.filter((project) => project.getId() !== id);
+    this.#projects = this.#projects.filter((project) => project.getId() !== id);
 
     this.save();
   }
