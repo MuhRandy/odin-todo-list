@@ -1,15 +1,17 @@
 export default class Prioritizable {
-  constructor(priority = "normal") {
-    this.priority = priority;
-  }
+  #priority = "normal";
 
-  setPriority(priority) {
+  setPriorityByNumber(priorityNumber) {
     const priorities = ["urgent", "important", "normal", "low"];
 
-    this.priority = priorities[priority];
+    this.#priority = priorities[priorityNumber];
+  }
+
+  setPriority(newPriority) {
+    this.#priority = newPriority;
   }
 
   getPriority() {
-    return this.priority;
+    return this.#priority;
   }
 }

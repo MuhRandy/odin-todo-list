@@ -10,6 +10,8 @@ export default class Todo {
   #projectId;
   #notes = "";
   #dueDate = "";
+  #completable = new Completable();
+  #prioritizable = new Prioritizable();
   constructor(title, description, projectId, id) {
     this.#title = title;
     this.#description = description;
@@ -17,8 +19,6 @@ export default class Todo {
     this.#projectId = projectId;
 
     this.checklistManager = new ChecklistManager(this.#projectId, this.#id);
-    this.completable = new Completable();
-    this.prioritizable = new Prioritizable();
   }
 
   setTitle(newTitle) {
@@ -29,8 +29,12 @@ export default class Todo {
     this.#description = newDescription;
   }
 
-  setPriority(priority) {
-    this.prioritizable.setPriority(priority);
+  setPriorityByNumber(priorityNumber) {
+    this.#prioritizable.setPriorityByNumber(priorityNumber);
+  }
+
+  setPriority(newPriority) {
+    this.#prioritizable.setPriority(newPriority);
   }
 
   setDueDate(date) {
@@ -41,12 +45,16 @@ export default class Todo {
     this.#notes = notes;
   }
 
+  setCompleteStatus(newStatus) {
+    this.#completable.setCompleteStatus(newStatus);
+  }
+
   toggleComplete() {
-    this.completable.toggleComplete();
+    this.#completable.toggleComplete();
   }
 
   isComplete() {
-    return this.completable.isComplete;
+    return this.#completable.getCompleteStatus();
   }
 
   addChecklistItem(title, id = new Date().getTime()) {
@@ -66,7 +74,7 @@ export default class Todo {
   }
 
   getPriority() {
-    return this.prioritizable.getPriority();
+    return this.#prioritizable.getPriority();
   }
 
   getNotes() {

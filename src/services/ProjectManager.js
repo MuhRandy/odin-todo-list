@@ -1,6 +1,4 @@
 import LocalStorageService from "./LocalStorageService";
-import Completable from "../models/behaviors/Completable";
-import Prioritizable from "../models/behaviors/Prioritizable";
 import Project from "../models/entities/Project";
 import ProjectsPrinter from "./ProjectsPrinter";
 import Checker from "./Checker";
@@ -128,8 +126,8 @@ export default class ProjectManager {
 
         currentTodo.setNotes(todo.notes);
         currentTodo.setDueDate(todo.dueDate);
-        currentTodo.prioritizable = new Prioritizable(todo.priority);
-        currentTodo.completable = new Completable(todo.isComplete);
+        currentTodo.setPriority(todo.priority);
+        currentTodo.setCompleteStatus(todo.isComplete);
 
         todo.checklists.forEach((checklist) => {
           const currentChecklist = currentTodo.addChecklistItem(
@@ -137,10 +135,8 @@ export default class ProjectManager {
             checklist.id
           );
 
-          currentChecklist.prioritizable = new Prioritizable(
-            checklist.priority
-          );
-          currentChecklist.completable = new Completable(checklist.isComplete);
+          currentChecklist.setPriority(checklist.priority);
+          currentChecklist.setCompleteStatus(checklist.isComplete);
         });
       });
     });
