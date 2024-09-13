@@ -4,16 +4,16 @@ import Checker from "../../services/Checker";
 
 export default class TodoManager {
   #projectId;
+  #todos = [];
 
   constructor(projectId) {
-    this.todos = [];
     this.#projectId = projectId;
   }
 
   createTodo(title, description, id = new Date().getTime()) {
     const newTodo = new Todo(title, description, this.#projectId, id);
 
-    this.todos.push(newTodo);
+    this.#todos.push(newTodo);
 
     ProjectManager.save();
 
@@ -21,17 +21,17 @@ export default class TodoManager {
   }
 
   deleteTodo(id) {
-    Checker.isItemExist(this.todos, id);
+    Checker.isItemExist(this.#todos, id);
 
-    this.todos = this.todos.filter((todo) => todo.getId() !== id);
+    this.#todos = this.#todos.filter((todo) => todo.getId() !== id);
 
     ProjectManager.save();
   }
 
   getTodo(id) {
-    Checker.isItemExist(this.todos, id);
+    Checker.isItemExist(this.#todos, id);
 
-    return this.todos.filter((todo) => todo.getId() === id)[0];
+    return this.#todos.filter((todo) => todo.getId() === id)[0];
   }
 
   getTodoData(id) {
@@ -50,6 +50,6 @@ export default class TodoManager {
   }
 
   getTodos() {
-    return this.todos;
+    return this.#todos;
   }
 }

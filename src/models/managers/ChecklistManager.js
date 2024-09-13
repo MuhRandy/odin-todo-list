@@ -5,8 +5,8 @@ import Checklist from "../entities/Checklist";
 export default class ChecklistManager {
   #projectId;
   #todoId;
+  #checklists = [];
   constructor(projectId, todoId) {
-    this.checklists = [];
     this.#todoId = todoId;
     this.#projectId = projectId;
   }
@@ -19,7 +19,7 @@ export default class ChecklistManager {
       id
     );
 
-    this.checklists.push(newChecklist);
+    this.#checklists.push(newChecklist);
 
     ProjectManager.save();
 
@@ -27,9 +27,9 @@ export default class ChecklistManager {
   }
 
   deleteChecklist(id) {
-    Checker.isItemExist(this.checklists, id);
+    Checker.isItemExist(this.#checklists, id);
 
-    this.checklists = this.checklists.filter(
+    this.#checklists = this.#checklists.filter(
       (checklist) => checklist.getId() !== id
     );
 
@@ -37,13 +37,13 @@ export default class ChecklistManager {
   }
 
   getChecklists() {
-    return this.checklists;
+    return this.#checklists;
   }
 
   getChecklist(id) {
-    Checker.isItemExist(this.checklists, id);
+    Checker.isItemExist(this.#checklists, id);
 
-    return this.checklists.filter((checklist) => checklist.getId() === id)[0];
+    return this.#checklists.filter((checklist) => checklist.getId() === id)[0];
   }
 
   getChecklistData(id) {
