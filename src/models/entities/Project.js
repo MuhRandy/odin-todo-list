@@ -3,7 +3,7 @@ import TodoManager from "../managers/TodoManager";
 export default class Project {
   #title;
   #id;
-  #todoManager = new TodoManager(id);
+  #todoManager = new TodoManager(this.#id);
   constructor(title, id) {
     this.#title = title;
     this.#id = id;
