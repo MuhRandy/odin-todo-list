@@ -58,4 +58,10 @@ export default class ChecklistManager {
       priority: checklist.getPriority(),
     };
   }
+
+  getChecklistsData() {
+    return this.getChecklists().map((checklist) =>
+      this.getChecklistData(checklist.getId())
+    );
+  }
 }

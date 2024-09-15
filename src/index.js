@@ -1,5 +1,12 @@
+import DOMGenerator from "./services/DOMGenerator";
+import ProjectManager from "./services/ProjectManager";
 import Tester from "./services/Tester";
+import "./styles.css";
 
-// Tester.testGetData();
+Tester.generateDataToLocalStorage();
 
-Tester.testDeleteData();
+ProjectManager.load();
+
+DOMGenerator.generateProjectsList();
+
+DOMGenerator.generateProject(4827365893012);

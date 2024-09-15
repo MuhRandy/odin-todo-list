@@ -52,4 +52,8 @@ export default class TodoManager {
   getTodos() {
     return this.#todos;
   }
+
+  getTodosData() {
+    return this.getTodos().map((todo) => this.getTodoData(todo.getId()));
+  }
 }

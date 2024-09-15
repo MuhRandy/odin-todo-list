@@ -76,10 +76,22 @@ export default class ProjectManager {
     };
   }
 
+  static getProjectsData() {
+    return this.#projects.map((project) =>
+      this.getProjectData(project.getId())
+    );
+  }
+
   static getTodoData(projectId, id) {
     const todoManager = this.getProject(projectId).getTodoManager();
 
     return todoManager.getTodoData(id);
+  }
+
+  static getTodosData(projectId) {
+    const todoManager = this.getProject(projectId).getTodoManager();
+
+    return todoManager.getTodosData();
   }
 
   static getChecklistData(projectId, todoId, id) {
@@ -89,6 +101,15 @@ export default class ProjectManager {
       .getChecklistManager();
 
     return checklistManager.getChecklistData(id);
+  }
+
+  static getChecklistsData(projectId, todoId) {
+    const checklistManager = this.getProject(projectId)
+      .getTodoManager()
+      .getTodo(todoId)
+      .getChecklistManager();
+
+    return checklistManager.getChecklistsData();
   }
 
   static deleteProject(id) {
