@@ -6,14 +6,18 @@ export default class DOMFactory {
 
     ProjectManager.getTodosData(projectId).map((todo) => {
       const container = this.#createContainer("todo");
-      const titleContainer = this.#createTitle(projectId, todo.id, todo.title);
+      const titleWithIcon = this.#createTitleWithIcon(
+        projectId,
+        todo.id,
+        todo.title
+      );
       const description = document.createElement("p");
       const checklists = this.#createChecklists(projectId, todo.id);
 
       description.textContent = todo.description;
       description.className = "description";
 
-      container.appendChild(titleContainer);
+      container.appendChild(titleWithIcon);
       container.appendChild(description);
 
       container.appendChild(checklists);
@@ -29,14 +33,14 @@ export default class DOMFactory {
 
     ProjectManager.getChecklistsData(projectId, todoId).map((checklist) => {
       const li = document.createElement("li");
-      const titleContainer = this.#createTitle(
+      const titleWithIcon = this.#createTitleWithIcon(
         projectId,
         checklist.id,
         checklist.title,
         todoId
       );
 
-      li.appendChild(titleContainer);
+      li.appendChild(titleWithIcon);
 
       checklistsContainer.appendChild(li);
     });
@@ -82,5 +86,34 @@ export default class DOMFactory {
     titleContainer.appendChild(titleLabel);
 
     return titleContainer;
+  }
+
+  static #createTitleWithIcon(projectId, id, title, todoId = null) {
+    const container = this.#createContainer("title-with-icon");
+    const titleContainer = this.#createTitle(
+      projectId,
+      id,
+      title,
+      (todoId = null)
+    );
+    const iconContainer = this.#createContainer("icon");
+    const editIcon = this.#createIcon("edit");
+    const deleteIcon = this.#createIcon("trash");
+
+    iconContainer.appendChild(editIcon);
+    iconContainer.appendChild(deleteIcon);
+
+    container.appendChild(titleContainer);
+    container.appendChild(iconContainer);
+
+    return container;
+  }
+
+  static #createIcon(IconCode) {
+    const icon = document.createElement("i");
+
+    icon.className = `ti ti-${IconCode}`;
+
+    return icon;
   }
 }
