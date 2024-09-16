@@ -12,12 +12,13 @@ export default class Todo {
   #dueDate = "";
   #completable = new Completable();
   #prioritizable = new Prioritizable();
-  #checklistManager = new ChecklistManager(this.#projectId, this.#id);
+  #checklistManager;
   constructor(title, description, projectId, id) {
     this.#title = title;
     this.#description = description;
     this.#id = id;
     this.#projectId = projectId;
+    this.#checklistManager = new ChecklistManager(projectId, id);
   }
 
   setTitle(newTitle) {
