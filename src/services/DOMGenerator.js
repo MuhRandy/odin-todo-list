@@ -7,9 +7,12 @@ export default class DOMGenerator {
 
     ProjectManager.getProjectsData().map((project) => {
       const li = document.createElement("li");
+      const button = document.createElement("button");
 
-      li.textContent = project.title;
-      li.dataset.id = project.id;
+      button.textContent = project.title;
+      button.addEventListener("click", () => this.generateProject(project.id));
+
+      li.appendChild(button);
 
       projects.appendChild(li);
     });
@@ -21,6 +24,8 @@ export default class DOMGenerator {
     const main = document.querySelector(".main");
     const projectTitle = document.createElement("h1");
     const todos = DOMFactory.createTodos(id);
+
+    main.textContent = "";
 
     projectTitle.textContent = projectData.title;
     projectTitle.dataset.id = projectData.id;
