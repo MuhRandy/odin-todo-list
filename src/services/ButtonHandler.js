@@ -1,4 +1,4 @@
-import DOMGenerator from "./DOMGenerator";
+import DOMRenderer from "./DOMRenderer";
 import ProjectManager from "./ProjectManager";
 
 export default class ButtonHandler {
@@ -6,6 +6,6 @@ export default class ButtonHandler {
     if (!todoId) ProjectManager.deleteTodo(projectId, id);
     if (todoId) ProjectManager.deleteChecklist(projectId, todoId, id);
 
-    DOMGenerator.generateProject(projectId);
+    DOMRenderer.renderProject(projectId);
   }
 }

@@ -1,8 +1,8 @@
 import DOMFactory from "./DOMFactory";
 import ProjectManager from "./ProjectManager";
 
-export default class DOMGenerator {
-  static generateProjectsList() {
+export default class DOMRenderer {
+  static renderProjectsList() {
     const projects = document.querySelector(".projects");
 
     ProjectManager.getProjectsData().map((project) => {
@@ -10,7 +10,7 @@ export default class DOMGenerator {
       const button = document.createElement("button");
 
       button.textContent = project.title;
-      button.addEventListener("click", () => this.generateProject(project.id));
+      button.addEventListener("click", () => this.renderProject(project.id));
 
       li.appendChild(button);
 
@@ -18,7 +18,7 @@ export default class DOMGenerator {
     });
   }
 
-  static generateProject(id) {
+  static renderProject(id) {
     const projectData = ProjectManager.getProjectData(id);
 
     const main = document.querySelector(".main");
