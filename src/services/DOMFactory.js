@@ -1,3 +1,4 @@
+import ButtonHandler from "./ButtonHandler";
 import ProjectManager from "./ProjectManager";
 
 export default class DOMFactory {
@@ -48,12 +49,11 @@ export default class DOMFactory {
     return checklistsContainer;
   }
 
-  static #createCheckbox(projectId, id) {
+  static #createCheckbox(id) {
     const checkbox = document.createElement("input");
 
     checkbox.type = "checkbox";
     checkbox.id = id;
-    checkbox.dataset.projectId = projectId;
 
     return checkbox;
   }
@@ -75,9 +75,9 @@ export default class DOMFactory {
     return div;
   }
 
-  static #createTitle(projectId, id, title, todoId = null) {
+  static #createTitle(id, title, todoId = null) {
     const titleContainer = this.#createContainer("title");
-    const checkbox = this.#createCheckbox(projectId, id);
+    const checkbox = this.#createCheckbox(id);
     const titleLabel = this.#createLabel(id, title);
 
     if (todoId) checkbox.dataset.todoId = todoId;
@@ -90,15 +90,14 @@ export default class DOMFactory {
 
   static #createTitleWithIcon(projectId, id, title, todoId = null) {
     const container = this.#createContainer("title-with-icon");
-    const titleContainer = this.#createTitle(
-      projectId,
-      id,
-      title,
-      (todoId = null)
-    );
+    const titleContainer = this.#createTitle(id, title, todoId);
     const iconContainer = this.#createContainer("icon");
-    const editIcon = this.#createIcon("edit");
-    const deleteIcon = this.#createIcon("trash");
+    const editIcon = this.#createButtonWithIcon("edit");
+    const deleteIcon = this.#createButtonWithIcon("trash");
+
+    deleteIcon.addEventListener("click", () => {
+      ButtonHandler.deleteItem(projectId, id, todoId);
+    });
 
     iconContainer.appendChild(editIcon);
     iconContainer.appendChild(deleteIcon);
@@ -109,11 +108,20 @@ export default class DOMFactory {
     return container;
   }
 
-  static #createIcon(IconCode) {
+  static #createIcon(iconCode) {
     const icon = document.createElement("i");
 
-    icon.className = `ti ti-${IconCode}`;
+    icon.className = `ti ti-${iconCode}`;
 
     return icon;
+  }
+
+  static #createButtonWithIcon(iconCode) {
+    const button = document.createElement("button");
+    const icon = this.#createIcon(iconCode);
+
+    button.appendChild(icon);
+
+    return button;
   }
 }
