@@ -13,14 +13,33 @@ export default class DOMFactory {
         todo.id,
         todo.title
       );
+      const descriptionContainer = this.#createContainer("description");
       const description = document.createElement("p");
+      const checklistNumberAndPriority = this.#createContainer(
+        "checklist-number-and-priority"
+      );
+      const checklistNumber = this.#createIconWithDescription(
+        "subtask",
+        "checklist-number",
+        todo.checklistNumber
+      );
+      const priority = this.#createIconWithDescription(
+        "info-circle",
+        `priority ${todo.priority}`,
+        todo.priority
+      );
       const checklists = this.#createChecklists(projectId, todo.id);
 
+      checklistNumberAndPriority.appendChild(checklistNumber);
+      checklistNumberAndPriority.appendChild(priority);
+
       description.textContent = todo.description;
-      description.className = "description";
+
+      descriptionContainer.appendChild(description);
+      descriptionContainer.appendChild(checklistNumberAndPriority);
 
       container.appendChild(titleWithIcon);
-      container.appendChild(description);
+      container.appendChild(descriptionContainer);
 
       container.appendChild(checklists);
 
@@ -157,5 +176,18 @@ export default class DOMFactory {
     button.appendChild(icon);
 
     return button;
+  }
+
+  static #createIconWithDescription(iconCode, className, desc) {
+    const container = this.#createContainer(className);
+    const icon = this.#createIcon(iconCode);
+    const description = document.createElement("span");
+
+    description.textContent = desc;
+
+    container.appendChild(icon);
+    container.appendChild(description);
+
+    return container;
   }
 }

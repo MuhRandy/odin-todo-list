@@ -1,6 +1,13 @@
 :root {
   --primary: #6439ff;
   --secondary: #9b80ff;
+  --line: 1px solid #9c80ff49;
+
+  --urgent: #f0440a;
+  --important: palevioletred;
+  --normal: var(--primary);
+  --low: var(--secondary);
+
   font-size: 62.5%;
 }
 
@@ -32,6 +39,7 @@ button {
 
 input[type="checkbox"]:checked + label {
   text-decoration: line-through;
+  color: var(--secondary);
 }
 
 .aside {
@@ -57,7 +65,7 @@ h1 {
 
 .aside ul li {
   display: flex;
-  align-items: center;
+  align-items: start;
   position: relative;
 }
 
@@ -75,7 +83,7 @@ h1 {
 .todos {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 }
 
 .icon {
@@ -86,8 +94,29 @@ h1 {
   display: block;
 }
 
-.todo {
-  border-bottom: 1px solid var(--secondary);
+.checklist-number-and-priority,
+.checklist-number,
+.priority {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.checklist-number-and-priority {
+  gap: 5px;
+}
+
+.priority.urgent {
+  color: var(--urgent);
+}
+.priority.important {
+  color: var(--important);
+}
+.priority.normal {
+  color: var(--normal);
+}
+.priority.low {
+  color: var(--low);
 }
 
 .title-with-icon {
@@ -100,20 +129,30 @@ h1 {
 }
 
 .todo .title input[type="checkbox"] {
-  accent-color: var(--primary);
+  accent-color: var(--secondary);
   margin-right: 1ch;
 }
 
-.todo .description,
-.todo .checklists {
+.description {
   color: var(--secondary);
-  margin-left: 20px;
+  padding-left: 20px;
+  padding-bottom: 5px;
+  border-bottom: var(--line);
 }
 
-.todo .checklists {
+.checklists {
   list-style: none;
   padding-left: 0;
-  accent-color: var(--secondary);
+  margin-left: 20px;
+  margin-top: 5px;
+}
+
+.checklists li {
+  --ptb: 5px;
+
+  border-bottom: var(--line);
+  padding-top: var(--ptb);
+  padding-bottom: var(--ptb);
 }
 
 .checklists input[type="checkbox"] {

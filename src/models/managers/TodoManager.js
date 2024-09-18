@@ -36,6 +36,7 @@ export default class TodoManager {
 
   getTodoData(id) {
     const todo = this.getTodo(id);
+    const checklistNumber = todo.getChecklistManager().getChecklists().length;
 
     return {
       title: todo.getTitle(),
@@ -46,6 +47,7 @@ export default class TodoManager {
       dueDate: todo.getDueDate(),
       isComplete: todo.isComplete(),
       priority: todo.getPriority(),
+      checklistNumber,
     };
   }
 
