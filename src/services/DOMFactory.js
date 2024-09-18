@@ -30,7 +30,9 @@ export default class DOMFactory {
   }
 
   static #createChecklists(projectId, todoId) {
-    const checklistsContainer = this.#createContainer("checklists");
+    const checklistsContainer = document.createElement("ul");
+
+    checklistsContainer.className = "checklists";
 
     ProjectManager.getChecklistsData(projectId, todoId).map((checklist) => {
       const li = document.createElement("li");
@@ -49,11 +51,40 @@ export default class DOMFactory {
     return checklistsContainer;
   }
 
-  static #createCheckbox(id) {
+  static #createCheckbox(projectId, id, todoId = null) {
     const checkbox = document.createElement("input");
+    let checkboxState;
 
     checkbox.type = "checkbox";
     checkbox.id = id;
+
+    if (!todoId) {
+      const isTodoComplete = ProjectManager.getTodoData(
+        projectId,
+        id
+      ).isComplete;
+
+      checkboxState = isTodoComplete;
+    }
+
+    if (todoId) {
+      const isChecklistComplete = ProjectManager.getChecklistData(
+        projectId,
+        todoId,
+        id
+      ).isComplete;
+
+      checkbox.dataset.todoId = todoId;
+      checkboxState = isChecklistComplete;
+    }
+
+    checkbox.checked = checkboxState;
+
+    checkbox.addEventListener("click", () => {
+      ButtonHandler.toggleIsComplete(projectId, id, todoId);
+
+      ProjectManager.save();
+    });
 
     return checkbox;
   }
@@ -75,12 +106,10 @@ export default class DOMFactory {
     return div;
   }
 
-  static #createTitle(id, title, todoId = null) {
+  static #createTitle(projectId, id, title, todoId = null) {
     const titleContainer = this.#createContainer("title");
-    const checkbox = this.#createCheckbox(id);
+    const checkbox = this.#createCheckbox(projectId, id, todoId);
     const titleLabel = this.#createLabel(id, title);
-
-    if (todoId) checkbox.dataset.todoId = todoId;
 
     titleContainer.appendChild(checkbox);
     titleContainer.appendChild(titleLabel);
@@ -90,7 +119,7 @@ export default class DOMFactory {
 
   static #createTitleWithIcon(projectId, id, title, todoId = null) {
     const container = this.#createContainer("title-with-icon");
-    const titleContainer = this.#createTitle(id, title, todoId);
+    const titleContainer = this.#createTitle(projectId, id, title, todoId);
     const iconContainer = this.#createContainer("icon");
     const editIcon = this.#createButtonWithIcon("edit");
     const deleteIcon = this.#createButtonWithIcon("trash");

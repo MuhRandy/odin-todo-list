@@ -30,6 +30,10 @@ button {
   border: none;
 }
 
+input[type="checkbox"]:checked + label {
+  text-decoration: line-through;
+}
+
 .aside {
   background-color: var(--primary);
   color: white;
@@ -74,6 +78,14 @@ h1 {
   gap: 10px;
 }
 
+.icon {
+  display: none;
+}
+
+.title-with-icon:hover .icon {
+  display: block;
+}
+
 .todo {
   border-bottom: 1px solid var(--secondary);
 }
@@ -83,7 +95,7 @@ h1 {
   justify-content: space-between;
 }
 
-.todo .title {
+.todo > .title-with-icon {
   font-size: 1.8rem;
 }
 

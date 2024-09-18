@@ -8,4 +8,21 @@ export default class ButtonHandler {
 
     DOMRenderer.renderProject(projectId);
   }
+
+  static toggleIsComplete(projectId, id, todoId = null) {
+    const project = ProjectManager.getProject(projectId);
+
+    if (!todoId) {
+      const todo = project.getTodoManager().getTodo(id);
+
+      todo.toggleComplete();
+    }
+
+    if (todoId) {
+      const todo = project.getTodoManager().getTodo(todoId);
+      const checklist = todo.getChecklistManager().getChecklist(id);
+
+      checklist.toggleComplete();
+    }
+  }
 }
