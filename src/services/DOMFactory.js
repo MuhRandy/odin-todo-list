@@ -1,11 +1,12 @@
 import ButtonHandler from "./ButtonHandler";
-import ProjectManager from "./ProjectManager";
+import ProjectFacade from "./ProjectFacade";
 
 export default class DOMFactory {
   static createTodos(projectId) {
     const todosContainer = this.#createContainer("todos");
+    const todoManager = ProjectFacade.getTodoManager(projectId);
 
-    ProjectManager.getTodosData(projectId).map((todo) => {
+    todoManager.getTodosData(projectId).map((todo) => {
       const container = this.#createContainer("todo");
       const titleWithIcon = this.#createTitleWithIcon(
         projectId,
@@ -34,7 +35,12 @@ export default class DOMFactory {
 
     checklistsContainer.className = "checklists";
 
-    ProjectManager.getChecklistsData(projectId, todoId).map((checklist) => {
+    const checklistManager = ProjectFacade.getChecklistManager(
+      projectId,
+      todoId
+    );
+
+    checklistManager.getChecklistsData(projectId, todoId).map((checklist) => {
       const li = document.createElement("li");
       const titleWithIcon = this.#createTitleWithIcon(
         projectId,
@@ -59,20 +65,19 @@ export default class DOMFactory {
     checkbox.id = id;
 
     if (!todoId) {
-      const isTodoComplete = ProjectManager.getTodoData(
-        projectId,
-        id
-      ).isComplete;
+      const todoManager = ProjectFacade.getTodoManager(projectId);
+      const isTodoComplete = todoManager.getTodoData(id).isComplete;
 
       checkboxState = isTodoComplete;
     }
 
     if (todoId) {
-      const isChecklistComplete = ProjectManager.getChecklistData(
+      const checklistManager = ProjectFacade.getChecklistManager(
         projectId,
-        todoId,
-        id
-      ).isComplete;
+        todoId
+      );
+      const isChecklistComplete =
+        checklistManager.getChecklistData(id).isComplete;
 
       checkbox.dataset.todoId = todoId;
       checkboxState = isChecklistComplete;
@@ -83,7 +88,7 @@ export default class DOMFactory {
     checkbox.addEventListener("click", () => {
       ButtonHandler.toggleIsComplete(projectId, id, todoId);
 
-      ProjectManager.save();
+      ProjectFacade.saveProjects();
     });
 
     return checkbox;

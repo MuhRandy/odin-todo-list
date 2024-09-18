@@ -1,7 +1,7 @@
-import LocalStorageService from "./LocalStorageService";
 import Project from "../models/entities/Project";
 import ProjectsPrinter from "./ProjectsPrinter";
 import Checker from "./Checker";
+import ProjectFacade from "./ProjectFacade";
 
 export default class ProjectManager {
   static #projects = [];
@@ -11,43 +11,9 @@ export default class ProjectManager {
 
     this.#projects.push(newProject);
 
-    this.save();
+    ProjectFacade.saveProjects();
 
     return newProject;
-  }
-
-  static save() {
-    const savedProjects = this.#projects.map((project) => {
-      const projectData = this.getProjectData(project.getId());
-
-      return {
-        ...projectData,
-        todos: project.getTodos().map((todo) => {
-          const todoData = this.getTodoData(project.getId(), todo.getId());
-
-          return {
-            ...todoData,
-            checklists: todo.getChecklists().map((checklist) => {
-              const checklistData = this.getChecklistData(
-                project.getId(),
-                todo.getId(),
-                checklist.getId()
-              );
-
-              return checklistData;
-            }),
-          };
-        }),
-      };
-    });
-
-    LocalStorageService.save("projects", savedProjects);
-  }
-
-  static load() {
-    const loadedProjects = LocalStorageService.load("projects");
-
-    this.transform(loadedProjects);
   }
 
   static printProjects() {
@@ -82,88 +48,11 @@ export default class ProjectManager {
     );
   }
 
-  static getTodoData(projectId, id) {
-    const todoManager = this.getProject(projectId).getTodoManager();
-
-    return todoManager.getTodoData(id);
-  }
-
-  static getTodosData(projectId) {
-    const todoManager = this.getProject(projectId).getTodoManager();
-
-    return todoManager.getTodosData();
-  }
-
-  static getChecklistData(projectId, todoId, id) {
-    const checklistManager = this.getProject(projectId)
-      .getTodoManager()
-      .getTodo(todoId)
-      .getChecklistManager();
-
-    return checklistManager.getChecklistData(id);
-  }
-
-  static getChecklistsData(projectId, todoId) {
-    const checklistManager = this.getProject(projectId)
-      .getTodoManager()
-      .getTodo(todoId)
-      .getChecklistManager();
-
-    return checklistManager.getChecklistsData();
-  }
-
   static deleteProject(id) {
     this.getProject(id);
 
     this.#projects = this.#projects.filter((project) => project.getId() !== id);
 
-    this.save();
-  }
-
-  static deleteTodo(projectId, id) {
-    const targetProjectTodoManager =
-      this.getProject(projectId).getTodoManager();
-
-    targetProjectTodoManager.deleteTodo(id);
-  }
-
-  static deleteChecklist(projectId, todoId, id) {
-    const targetTodoChecklistManager = this.getProject(projectId)
-      .getTodoManager()
-      .getTodo(todoId)
-      .getChecklistManager();
-
-    targetTodoChecklistManager.deleteChecklist(id);
-  }
-
-  static transform(projects) {
-    projects?.forEach((project) => {
-      const currentProject = this.createProject(project.title, project.id);
-
-      const todoManager = currentProject.getTodoManager();
-
-      project.todos.forEach((todo) => {
-        const currentTodo = todoManager.createTodo(
-          todo.title,
-          todo.description,
-          todo.id
-        );
-
-        currentTodo.setNotes(todo.notes);
-        currentTodo.setDueDate(todo.dueDate);
-        currentTodo.setPriority(todo.priority);
-        currentTodo.setCompleteStatus(todo.isComplete);
-
-        todo.checklists.forEach((checklist) => {
-          const currentChecklist = currentTodo.addChecklistItem(
-            checklist.title,
-            checklist.id
-          );
-
-          currentChecklist.setPriority(checklist.priority);
-          currentChecklist.setCompleteStatus(checklist.isComplete);
-        });
-      });
-    });
+    ProjectFacade.saveProjects();
   }
 }

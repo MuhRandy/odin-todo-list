@@ -1,3 +1,5 @@
+import ProjectFacade from "../../services/ProjectFacade";
+
 export default class Prioritizable {
   #priority = "normal";
 
@@ -9,6 +11,8 @@ export default class Prioritizable {
 
   setPriority(newPriority) {
     this.#priority = newPriority;
+
+    ProjectFacade.saveProjects();
   }
 
   getPriority() {

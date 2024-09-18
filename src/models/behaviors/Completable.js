@@ -1,3 +1,5 @@
+import ProjectFacade from "../../services/ProjectFacade";
+
 export default class Completable {
   #isComplete = false;
 
@@ -7,6 +9,7 @@ export default class Completable {
 
   setCompleteStatus(newCompleteStatus) {
     this.#isComplete = newCompleteStatus;
+    ProjectFacade.saveProjects();
   }
 
   toggleComplete() {

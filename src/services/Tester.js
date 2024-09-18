@@ -1,4 +1,5 @@
 import LocalStorageService from "./LocalStorageService";
+import ProjectFacade from "./ProjectFacade";
 import ProjectManager from "./ProjectManager";
 
 export default class Tester {
@@ -563,17 +564,21 @@ export default class Tester {
 
     this.generateDataToLocalStorage();
 
-    ProjectManager.load();
+    // ProjectManager.load();
+    ProjectFacade.loadProjects();
 
     ProjectManager.deleteProject(projectData.id);
-    ProjectManager.deleteTodo(todoData.projectId, todoData.id);
-    ProjectManager.deleteChecklist(
-      checklistData.projectId,
-      checklistData.todoId,
-      checklistData.id
-    );
 
-    ProjectManager.save();
+    const todoManager = ProjectFacade.getTodoManager(todoData.projectId);
+    todoManager.deleteTodo(todoData.id);
+
+    const checklistManager = ProjectFacade.getChecklistManager(
+      checklistData.projectId,
+      checklistData.todoId
+    );
+    checklistManager.deleteChecklist(checklistData.id);
+
+    ProjectFacade.saveProjects();
 
     ProjectManager.printProjects();
   }
@@ -595,13 +600,14 @@ export default class Tester {
     ProjectManager.load();
 
     console.log(ProjectManager.getProjectData(projectData.id));
-    console.log(ProjectManager.getTodoData(todoData.projectId, todoData.id));
-    console.log(
-      ProjectManager.getChecklistData(
-        checklistData.projectId,
-        checklistData.todoId,
-        checklistData.id
-      )
+
+    const todoManager = ProjectFacade.getTodoManager(todoData.projectId);
+    console.log(todoManager.getTodoData(todoData.id));
+
+    const checklistManager = ProjectFacade.getChecklistManager(
+      checklistData.projectId,
+      checklistData.todoId
     );
+    console.log(checklistManager.getChecklistData(checklistData.id));
   }
 }

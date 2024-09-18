@@ -1,5 +1,5 @@
 import Checker from "../../services/Checker";
-import ProjectManager from "../../services/ProjectManager";
+import ProjectFacade from "../../services/ProjectFacade";
 import Checklist from "../entities/Checklist";
 
 export default class ChecklistManager {
@@ -21,7 +21,7 @@ export default class ChecklistManager {
 
     this.#checklists.push(newChecklist);
 
-    ProjectManager.save();
+    ProjectFacade.saveProjects();
 
     return newChecklist;
   }
@@ -33,7 +33,7 @@ export default class ChecklistManager {
       (checklist) => checklist.getId() !== id
     );
 
-    ProjectManager.save();
+    ProjectFacade.saveProjects();
   }
 
   getChecklists() {

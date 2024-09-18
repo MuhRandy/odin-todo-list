@@ -1,6 +1,6 @@
 import Todo from "../entities/Todo";
-import ProjectManager from "../../services/ProjectManager";
 import Checker from "../../services/Checker";
+import ProjectFacade from "../../services/ProjectFacade";
 
 export default class TodoManager {
   #projectId;
@@ -15,7 +15,7 @@ export default class TodoManager {
 
     this.#todos.push(newTodo);
 
-    ProjectManager.save();
+    ProjectFacade.saveProjects();
 
     return newTodo;
   }
@@ -25,7 +25,7 @@ export default class TodoManager {
 
     this.#todos = this.#todos.filter((todo) => todo.getId() !== id);
 
-    ProjectManager.save();
+    ProjectFacade.saveProjects();
   }
 
   getTodo(id) {

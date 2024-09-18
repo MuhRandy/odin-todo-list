@@ -1,11 +1,11 @@
 import DOMRenderer from "./services/DOMRenderer";
-import ProjectManager from "./services/ProjectManager";
+import ProjectFacade from "./services/ProjectFacade";
 import Tester from "./services/Tester";
 import "./styles.css";
 
 Tester.generateDataToLocalStorage();
 
-ProjectManager.load();
+ProjectFacade.loadProjects();
 
 DOMRenderer.renderProjectsList();
 
