@@ -1,9 +1,10 @@
 import DOMRenderer from "./DOMRenderer";
 import ProjectFacade from "./ProjectFacade";
-import ProjectManager from "./ProjectManager";
 
 export default class ButtonHandler {
   static deleteItem(projectId, id, todoId = null) {
+    const dialog = document.querySelector("dialog");
+
     if (!todoId) {
       const todoManager = ProjectFacade.getTodoManager(projectId);
       todoManager.deleteTodo(id);
@@ -16,6 +17,8 @@ export default class ButtonHandler {
       );
       checklistManager.deleteChecklist(id);
     }
+
+    dialog.close();
 
     DOMRenderer.renderProject(projectId);
   }

@@ -1,3 +1,4 @@
+import ButtonHandler from "./ButtonHandler";
 import DOMFactory from "./DOMFactory";
 import ProjectManager from "./ProjectManager";
 
@@ -33,5 +34,24 @@ export default class DOMRenderer {
     main.appendChild(projectTitle);
 
     main.appendChild(todos);
+  }
+
+  static renderDeleteConfirmDialog(todoTitle, projectId, id, todoId = null) {
+    const dialog = document.querySelector("dialog");
+    const deleteConfirmBox = DOMFactory.createBoxDialog(
+      `Delete ${todoId ? "Checklist" : "To Do"}?`,
+      `${
+        todoId ? "Checklist" : "To Do"
+      } "${todoTitle}" will be permanently deleted`,
+      "delete",
+      "Delete",
+      () => ButtonHandler.deleteItem(projectId, id, todoId)
+    );
+
+    dialog.textContent = "";
+
+    dialog.appendChild(deleteConfirmBox);
+
+    dialog.show();
   }
 }

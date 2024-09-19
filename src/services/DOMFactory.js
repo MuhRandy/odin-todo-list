@@ -1,4 +1,5 @@
 import ButtonHandler from "./ButtonHandler";
+import DOMRenderer from "./DOMRenderer";
 import ProjectFacade from "./ProjectFacade";
 
 export default class DOMFactory {
@@ -47,6 +48,40 @@ export default class DOMFactory {
     });
 
     return todosContainer;
+  }
+
+  static createBoxDialog(
+    title,
+    description,
+    confirmClassName,
+    confirmText,
+    confirmClickHandler
+  ) {
+    const dialog = document.querySelector("dialog");
+    const box = this.#createContainer("box");
+    const heading = document.createElement("h1");
+    const p = document.createElement("p");
+    const buttons = this.#createContainer("buttons");
+    const cancelButton = this.#createButton("cancel", "Cancel");
+    const confirmButton = this.#createButton(confirmClassName, confirmText);
+
+    heading.textContent = title;
+    p.textContent = description;
+
+    cancelButton.addEventListener("click", () => {
+      dialog.close();
+    });
+
+    confirmButton.addEventListener("click", confirmClickHandler);
+
+    buttons.appendChild(cancelButton);
+    buttons.appendChild(confirmButton);
+
+    box.appendChild(heading);
+    box.appendChild(p);
+    box.appendChild(buttons);
+
+    return box;
   }
 
   static #createChecklists(projectId, todoId) {
@@ -142,6 +177,7 @@ export default class DOMFactory {
   }
 
   static #createTitleWithIcon(projectId, id, title, todoId = null) {
+    const dialog = document.querySelector("dialog");
     const container = this.#createContainer("title-with-icon");
     const titleContainer = this.#createTitle(projectId, id, title, todoId);
     const iconContainer = this.#createContainer("icon");
@@ -149,7 +185,7 @@ export default class DOMFactory {
     const deleteIcon = this.#createButtonWithIcon("trash");
 
     deleteIcon.addEventListener("click", () => {
-      ButtonHandler.deleteItem(projectId, id, todoId);
+      DOMRenderer.renderDeleteConfirmDialog(title, projectId, id, todoId);
     });
 
     iconContainer.appendChild(editIcon);
@@ -167,6 +203,15 @@ export default class DOMFactory {
     icon.className = `ti ti-${iconCode}`;
 
     return icon;
+  }
+
+  static #createButton(className, text) {
+    const button = document.createElement("button");
+
+    button.className = className;
+    button.textContent = text;
+
+    return button;
   }
 
   static #createButtonWithIcon(iconCode) {
