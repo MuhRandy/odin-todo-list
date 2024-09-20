@@ -60,6 +60,26 @@ dialog .box {
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.box h1 {
+  font-size: 2.2rem;
+}
+
+.box input {
+  border: none;
+  color: var(--primary);
+  font-size: 2rem;
+}
+
+.box textarea {
+  border: none;
+  color: var(--secondary);
+  font: inherit;
+  font-size: inherit;
 }
 
 .buttons {
@@ -88,6 +108,11 @@ dialog .box {
 .delete {
   border: 1px solid var(--urgent);
   background-color: var(--urgent);
+}
+
+.edit {
+  border: 1px solid #00b300;
+  background-color: #00b300;
 }
 
 input[type="checkbox"]:checked + label {

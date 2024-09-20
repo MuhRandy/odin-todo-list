@@ -36,21 +36,41 @@ export default class DOMRenderer {
     main.appendChild(todos);
   }
 
-  static renderDeleteConfirmDialog(todoTitle, projectId, id, todoId = null) {
-    const dialog = document.querySelector("dialog");
-    const deleteConfirmBox = DOMFactory.createBoxDialog(
-      `Delete ${todoId ? "Checklist" : "To Do"}?`,
-      `${
-        todoId ? "Checklist" : "To Do"
-      } "${todoTitle}" will be permanently deleted`,
-      "delete",
-      "Delete",
-      () => ButtonHandler.deleteItem(projectId, id, todoId)
+  static renderEditItemDialog(
+    title,
+    description,
+    projectId,
+    id,
+    todoId = null
+  ) {
+    const editItemBox = DOMFactory.createEditItemBoxDialog(
+      title,
+      description,
+      projectId,
+      id,
+      todoId
     );
+
+    this.renderBoxDialog(editItemBox);
+  }
+
+  static renderDeleteItemDialog(title, projectId, id, todoId = null) {
+    const deleteItemBox = DOMFactory.createDeleteItemBoxDialog(
+      title,
+      projectId,
+      id,
+      todoId
+    );
+
+    this.renderBoxDialog(deleteItemBox);
+  }
+
+  static renderBoxDialog(box) {
+    const dialog = document.querySelector("dialog");
 
     dialog.textContent = "";
 
-    dialog.appendChild(deleteConfirmBox);
+    dialog.appendChild(box);
 
     dialog.show();
   }

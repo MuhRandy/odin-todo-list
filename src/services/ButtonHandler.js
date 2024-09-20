@@ -23,6 +23,34 @@ export default class ButtonHandler {
     DOMRenderer.renderProject(projectId);
   }
 
+  static saveChange(
+    projectId,
+    id,
+    newTitle,
+    newDescription = null,
+    todoId = null
+  ) {
+    const dialog = document.querySelector("dialog");
+
+    if (!todoId) {
+      const todo = ProjectFacade.getTodoManager(projectId).getTodo(id);
+      todo.setTitle(newTitle);
+      todo.setDescription(newDescription);
+    }
+
+    if (todoId) {
+      const checklist = ProjectFacade.getChecklistManager(
+        projectId,
+        todoId
+      ).getChecklist(id);
+      checklist.setTitle(newTitle);
+    }
+
+    dialog.close();
+
+    DOMRenderer.renderProject(projectId);
+  }
+
   static toggleIsComplete(projectId, id, todoId = null) {
     if (!todoId) {
       const todo = ProjectFacade.getTodoManager(projectId).getTodo(id);

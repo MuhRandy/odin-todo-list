@@ -12,7 +12,8 @@ export default class DOMFactory {
       const titleWithIcon = this.#createTitleWithIcon(
         projectId,
         todo.id,
-        todo.title
+        todo.title,
+        todo.description
       );
       const descriptionContainer = this.#createContainer("description");
       const description = document.createElement("p");
@@ -50,25 +51,72 @@ export default class DOMFactory {
     return todosContainer;
   }
 
-  static createBoxDialog(
+  static createDeleteItemBoxDialog(title, projectId, id, todoId = null) {
+    const box = this.#createContainer("box");
+    const heading = document.createElement("h1");
+    const p = document.createElement("p");
+    const buttons = this.#createButtonsBoxDialog("delete", "Delete", () =>
+      ButtonHandler.deleteItem(projectId, id, todoId)
+    );
+
+    heading.textContent = `Delete ${todoId ? "Checklist" : "To Do"}?`;
+    p.textContent = `${
+      todoId ? "Checklist" : "To Do"
+    } "${title}" will be permanently deleted`;
+
+    box.appendChild(heading);
+    box.appendChild(p);
+    box.appendChild(buttons);
+
+    return box;
+  }
+
+  static createEditItemBoxDialog(
     title,
     description,
+    projectId,
+    id,
+    todoId = null
+  ) {
+    const box = this.#createContainer("box");
+    const titleInput = document.createElement("input");
+    const descriptionInput = document.createElement("textarea");
+    const heading = document.createElement("h1");
+    const buttons = this.#createButtonsBoxDialog("edit", "Save", () =>
+      ButtonHandler.saveChange(
+        projectId,
+        id,
+        titleInput.value,
+        descriptionInput.value,
+        todoId
+      )
+    );
+
+    heading.textContent = `Edit ${todoId ? "Checklist" : "To Do"}`;
+
+    titleInput.value = title;
+    descriptionInput.textContent = description;
+
+    box.appendChild(heading);
+    box.appendChild(titleInput);
+    if (!todoId) box.appendChild(descriptionInput);
+    box.appendChild(buttons);
+
+    return box;
+  }
+
+  static #createButtonsBoxDialog(
     confirmClassName,
     confirmText,
     confirmClickHandler
   ) {
     const dialog = document.querySelector("dialog");
-    const box = this.#createContainer("box");
-    const heading = document.createElement("h1");
-    const p = document.createElement("p");
     const buttons = this.#createContainer("buttons");
     const cancelButton = this.#createButton("cancel", "Cancel");
     const confirmButton = this.#createButton(confirmClassName, confirmText);
 
-    heading.textContent = title;
-    p.textContent = description;
-
     cancelButton.addEventListener("click", () => {
+      dialog.textContent = "";
       dialog.close();
     });
 
@@ -77,11 +125,7 @@ export default class DOMFactory {
     buttons.appendChild(cancelButton);
     buttons.appendChild(confirmButton);
 
-    box.appendChild(heading);
-    box.appendChild(p);
-    box.appendChild(buttons);
-
-    return box;
+    return buttons;
   }
 
   static #createChecklists(projectId, todoId) {
@@ -100,6 +144,7 @@ export default class DOMFactory {
         projectId,
         checklist.id,
         checklist.title,
+        null,
         todoId
       );
 
@@ -176,17 +221,32 @@ export default class DOMFactory {
     return titleContainer;
   }
 
-  static #createTitleWithIcon(projectId, id, title, todoId = null) {
-    const dialog = document.querySelector("dialog");
+  static #createTitleWithIcon(
+    projectId,
+    id,
+    title,
+    description = null,
+    todoId = null
+  ) {
     const container = this.#createContainer("title-with-icon");
     const titleContainer = this.#createTitle(projectId, id, title, todoId);
     const iconContainer = this.#createContainer("icon");
     const editIcon = this.#createButtonWithIcon("edit");
     const deleteIcon = this.#createButtonWithIcon("trash");
 
-    deleteIcon.addEventListener("click", () => {
-      DOMRenderer.renderDeleteConfirmDialog(title, projectId, id, todoId);
-    });
+    editIcon.addEventListener("click", () =>
+      DOMRenderer.renderEditItemDialog(
+        title,
+        description,
+        projectId,
+        id,
+        todoId
+      )
+    );
+
+    deleteIcon.addEventListener("click", () =>
+      DOMRenderer.renderDeleteItemDialog(title, projectId, id, todoId)
+    );
 
     iconContainer.appendChild(editIcon);
     iconContainer.appendChild(deleteIcon);
