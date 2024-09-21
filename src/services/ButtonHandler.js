@@ -2,67 +2,65 @@ import DOMRenderer from "./DOMRenderer";
 import ProjectFacade from "./ProjectFacade";
 
 export default class ButtonHandler {
-  static deleteItem(projectId, id, todoId = null) {
+  static deleteItem(itemData) {
     const dialog = document.querySelector("dialog");
 
-    if (!todoId) {
-      const todoManager = ProjectFacade.getTodoManager(projectId);
-      todoManager.deleteTodo(id);
+    if (!itemData.todoId) {
+      const todoManager = ProjectFacade.getTodoManager(itemData.projectId);
+      todoManager.deleteTodo(itemData.id);
     }
 
-    if (todoId) {
+    if (itemData.todoId) {
       const checklistManager = ProjectFacade.getChecklistManager(
-        projectId,
-        todoId
+        itemData.projectId,
+        itemData.todoId
       );
-      checklistManager.deleteChecklist(id);
+      checklistManager.deleteChecklist(itemData.id);
     }
 
     dialog.close();
 
-    DOMRenderer.renderProject(projectId);
+    DOMRenderer.renderProject(itemData.projectId);
   }
 
-  static saveChange(
-    projectId,
-    id,
-    newTitle,
-    newDescription = null,
-    todoId = null
-  ) {
+  static saveChange(itemData, newTitle, newDescription = null) {
     const dialog = document.querySelector("dialog");
 
-    if (!todoId) {
-      const todo = ProjectFacade.getTodoManager(projectId).getTodo(id);
+    if (!itemData.todoId) {
+      const todo = ProjectFacade.getTodoManager(itemData.projectId).getTodo(
+        itemData.id
+      );
       todo.setTitle(newTitle);
       todo.setDescription(newDescription);
     }
 
-    if (todoId) {
+    if (itemData.todoId) {
       const checklist = ProjectFacade.getChecklistManager(
-        projectId,
-        todoId
-      ).getChecklist(id);
+        itemData.projectId,
+        itemData.todoId
+      ).getChecklist(itemData.id);
       checklist.setTitle(newTitle);
     }
 
     dialog.close();
 
-    DOMRenderer.renderProject(projectId);
+    DOMRenderer.renderProject(itemData.projectId);
   }
 
-  static toggleIsComplete(projectId, id, todoId = null) {
-    if (!todoId) {
-      const todo = ProjectFacade.getTodoManager(projectId).getTodo(id);
+  static toggleIsComplete(itemData) {
+    if (!itemData.todoId) {
+      const todo = ProjectFacade.getTodoManager(itemData.projectId).getTodo(
+        itemData.id
+      );
 
       todo.toggleComplete();
     }
 
-    if (todoId) {
+    if (itemData.todoId) {
       const checklist = ProjectFacade.getChecklistManager(
-        projectId,
-        todoId
-      ).getChecklist(id);
+        itemData.projectId,
+        itemData.todoId
+      ).getChecklist(itemData.id);
 
       checklist.toggleComplete();
     }

@@ -1,4 +1,3 @@
-import ButtonHandler from "./ButtonHandler";
 import DOMFactory from "./DOMFactory";
 import ProjectManager from "./ProjectManager";
 
@@ -36,31 +35,14 @@ export default class DOMRenderer {
     main.appendChild(todos);
   }
 
-  static renderEditItemDialog(
-    title,
-    description,
-    projectId,
-    id,
-    todoId = null
-  ) {
-    const editItemBox = DOMFactory.createEditItemBoxDialog(
-      title,
-      description,
-      projectId,
-      id,
-      todoId
-    );
+  static renderEditItemDialog(itemData) {
+    const editItemBox = DOMFactory.createEditItemBoxDialog(itemData);
 
     this.renderBoxDialog(editItemBox);
   }
 
-  static renderDeleteItemDialog(title, projectId, id, todoId = null) {
-    const deleteItemBox = DOMFactory.createDeleteItemBoxDialog(
-      title,
-      projectId,
-      id,
-      todoId
-    );
+  static renderDeleteItemDialog(itemData) {
+    const deleteItemBox = DOMFactory.createDeleteItemBoxDialog(itemData);
 
     this.renderBoxDialog(deleteItemBox);
   }
