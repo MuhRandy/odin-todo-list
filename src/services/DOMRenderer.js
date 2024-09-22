@@ -5,6 +5,8 @@ export default class DOMRenderer {
   static renderProjectsList() {
     const projects = document.querySelector(".projects");
 
+    projects.textContent = "";
+
     ProjectManager.getProjectsData().map((project) => {
       const li = document.createElement("li");
       const button = document.createElement("button");
@@ -38,16 +40,22 @@ export default class DOMRenderer {
   static renderEditItemDialog(itemData) {
     const editItemBox = DOMFactory.createEditItemBoxDialog(itemData);
 
-    this.renderBoxDialog(editItemBox);
+    this.#renderBoxDialog(editItemBox);
   }
 
   static renderDeleteItemDialog(itemData) {
     const deleteItemBox = DOMFactory.createDeleteItemBoxDialog(itemData);
 
-    this.renderBoxDialog(deleteItemBox);
+    this.#renderBoxDialog(deleteItemBox);
   }
 
-  static renderBoxDialog(box) {
+  static renderAddItemDialog(itemType, itemData = null) {
+    const addItemBox = DOMFactory.createAddItemBoxDialog(itemType, itemData);
+
+    this.#renderBoxDialog(addItemBox);
+  }
+
+  static #renderBoxDialog(box) {
     const dialog = document.querySelector("dialog");
 
     dialog.textContent = "";

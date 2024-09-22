@@ -10,3 +10,9 @@ ProjectFacade.loadProjects();
 DOMRenderer.renderProjectsList();
 
 DOMRenderer.renderProject(4827365893012);
+
+const addProjectButton = document.querySelector(".heading button");
+
+addProjectButton.addEventListener("click", () =>
+  DOMRenderer.renderAddItemDialog("Project")
+);

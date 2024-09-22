@@ -6,6 +6,14 @@ export default class DOMFactory {
   static createTodos(projectId) {
     const todosContainer = this.#createContainer("todos");
     const todoManager = ProjectFacade.getTodoManager(projectId);
+    const addTodo = this.#createButtonWithIcon("pencil-plus");
+    const buttonText = document.createElement("span");
+
+    buttonText.textContent = "Add To-Do";
+    addTodo.className = "add-to-do";
+    addTodo.addEventListener("click", () =>
+      DOMRenderer.renderAddItemDialog("To-Do", { id: projectId })
+    );
 
     todoManager.getTodosData(projectId).map((todo) => {
       const container = this.#createContainer("todo");
@@ -43,7 +51,55 @@ export default class DOMFactory {
       todosContainer.appendChild(container);
     });
 
+    addTodo.appendChild(buttonText);
+
+    todosContainer.appendChild(addTodo);
+
     return todosContainer;
+  }
+
+  static #createChecklists(projectId, todoId) {
+    const checklistsContainer = document.createElement("ul");
+
+    checklistsContainer.className = "checklists";
+
+    const checklistManager = ProjectFacade.getChecklistManager(
+      projectId,
+      todoId
+    );
+
+    checklistManager.getChecklistsData(projectId, todoId).map((checklist) => {
+      const li = document.createElement("li");
+      const titleWithIcon = this.#createTitleWithIcon(checklist);
+
+      li.appendChild(titleWithIcon);
+
+      checklistsContainer.appendChild(li);
+    });
+
+    return checklistsContainer;
+  }
+
+  static createAddItemBoxDialog(itemType, itemData = null) {
+    const box = this.#createContainer("box");
+    const heading = document.createElement("h1");
+    const projectTitle = document.createElement("input");
+    const description = document.createElement("textarea");
+    const buttons = this.#createButtonsBoxDialog("add", "Add", () =>
+      ButtonHandler.addProject(projectTitle.value, itemData, description.value)
+    );
+
+    heading.textContent = `Add New ${itemType}`;
+
+    projectTitle.placeholder = "New Project";
+    description.placeholder = "description...";
+
+    box.appendChild(heading);
+    box.appendChild(projectTitle);
+    if (itemType === "To-Do") box.appendChild(description);
+    box.appendChild(buttons);
+
+    return box;
   }
 
   static createDeleteItemBoxDialog(itemData) {
@@ -115,28 +171,6 @@ export default class DOMFactory {
     return buttons;
   }
 
-  static #createChecklists(projectId, todoId) {
-    const checklistsContainer = document.createElement("ul");
-
-    checklistsContainer.className = "checklists";
-
-    const checklistManager = ProjectFacade.getChecklistManager(
-      projectId,
-      todoId
-    );
-
-    checklistManager.getChecklistsData(projectId, todoId).map((checklist) => {
-      const li = document.createElement("li");
-      const titleWithIcon = this.#createTitleWithIcon(checklist);
-
-      li.appendChild(titleWithIcon);
-
-      checklistsContainer.appendChild(li);
-    });
-
-    return checklistsContainer;
-  }
-
   static #createCheckbox(itemData) {
     const checkbox = document.createElement("input");
     const checkboxState = itemData.isComplete;
@@ -191,8 +225,13 @@ export default class DOMFactory {
     const container = this.#createContainer("title-with-icon");
     const titleContainer = this.#createTitle(itemData);
     const iconContainer = this.#createContainer("icon");
+    const addIcon = this.#createButtonWithIcon("plus");
     const editIcon = this.#createButtonWithIcon("edit");
     const deleteIcon = this.#createButtonWithIcon("trash");
+
+    addIcon.addEventListener("click", () =>
+      DOMRenderer.renderAddItemDialog("Checklist", itemData)
+    );
 
     editIcon.addEventListener("click", () =>
       DOMRenderer.renderEditItemDialog(itemData)
@@ -202,6 +241,7 @@ export default class DOMFactory {
       DOMRenderer.renderDeleteItemDialog(itemData)
     );
 
+    if (!itemData.todoId) iconContainer.appendChild(addIcon);
     iconContainer.appendChild(editIcon);
     iconContainer.appendChild(deleteIcon);
 

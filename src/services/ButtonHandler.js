@@ -1,10 +1,41 @@
 import DOMRenderer from "./DOMRenderer";
 import ProjectFacade from "./ProjectFacade";
+import ProjectManager from "./ProjectManager";
 
 export default class ButtonHandler {
-  static deleteItem(itemData) {
-    const dialog = document.querySelector("dialog");
+  static addProject(title, itemData = null, description = null) {
+    if (title.length === 0) return console.log("Title required!");
 
+    if (!itemData) {
+      const newProject = ProjectManager.createProject(title);
+
+      this.#closeDialogAndRenderChange(newProject.getId());
+
+      return;
+    }
+
+    if (!itemData.projectId) {
+      const todoManager = ProjectFacade.getTodoManager(itemData.id);
+      const newTodo = todoManager.createTodo(title, description);
+
+      this.#closeDialogAndRenderChange(newTodo.getProjectId());
+      DOMRenderer.renderProjectsList();
+
+      return;
+    }
+
+    if (itemData.projectId) {
+      const checklistManager = ProjectFacade.getChecklistManager(
+        itemData.projectId,
+        itemData.id
+      );
+      const newChecklist = checklistManager.addChecklistItem(title);
+
+      this.#closeDialogAndRenderChange(newChecklist.getProjectId());
+    }
+  }
+
+  static deleteItem(itemData) {
     if (!itemData.todoId) {
       const todoManager = ProjectFacade.getTodoManager(itemData.projectId);
       todoManager.deleteTodo(itemData.id);
@@ -18,14 +49,10 @@ export default class ButtonHandler {
       checklistManager.deleteChecklist(itemData.id);
     }
 
-    dialog.close();
-
-    DOMRenderer.renderProject(itemData.projectId);
+    this.#closeDialogAndRenderChange(itemData.projectId);
   }
 
   static saveChange(itemData, newTitle, newDescription = null) {
-    const dialog = document.querySelector("dialog");
-
     if (!itemData.todoId) {
       const todo = ProjectFacade.getTodoManager(itemData.projectId).getTodo(
         itemData.id
@@ -42,9 +69,7 @@ export default class ButtonHandler {
       checklist.setTitle(newTitle);
     }
 
-    dialog.close();
-
-    DOMRenderer.renderProject(itemData.projectId);
+    this.#closeDialogAndRenderChange(itemData.projectId);
   }
 
   static toggleIsComplete(itemData) {
@@ -64,5 +89,13 @@ export default class ButtonHandler {
 
       checklist.toggleComplete();
     }
+  }
+
+  static #closeDialogAndRenderChange(projectId) {
+    const dialog = document.querySelector("dialog");
+
+    dialog.close();
+
+    DOMRenderer.renderProject(projectId);
   }
 }

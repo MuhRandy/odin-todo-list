@@ -110,7 +110,8 @@ dialog .box {
   background-color: var(--urgent);
 }
 
-.edit {
+.edit,
+.add {
   border: 1px solid #00b300;
   background-color: #00b300;
 }
@@ -124,6 +125,12 @@ input[type="checkbox"]:checked + label {
   background-color: var(--primary);
   color: white;
   padding: 10px 20px;
+}
+
+.aside .heading {
+  display: flex;
+  justify-content: space-between;
+  font-size: 3rem;
 }
 
 h1 {
@@ -148,9 +155,11 @@ h1 {
 }
 
 .aside ul li::before {
-  content: "•";
+  content: "\eff2";
   font-size: 20px;
   margin-right: 5px;
+  font-weight: normal;
+  font-family: tabler-icons;
 }
 
 .main {
@@ -162,6 +171,17 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+.add-to-do {
+  color: var(--secondary);
+  font-size: 1.8rem;
+  display: flex;
+  gap: 3px;
+}
+
+.add-to-do:hover {
+  color: var(--primary);
 }
 
 .icon {
