@@ -138,10 +138,11 @@ export default class DOMFactory {
 
     box.appendChild(heading);
     box.appendChild(title);
-    if (itemType === "To-Do") box.appendChild(description);
-    if (itemType === "To-Do" || itemType === "Checklist")
+    if (itemType === "To-Do") {
+      box.appendChild(description);
       box.appendChild(priority);
-    if (itemType === "To-Do") box.appendChild(dueDate);
+      box.appendChild(dueDate);
+    }
     box.appendChild(buttons);
 
     return box;
@@ -220,9 +221,11 @@ export default class DOMFactory {
 
     box.appendChild(heading);
     box.appendChild(titleInput);
-    if (!itemData.todoId) box.appendChild(descriptionInput);
-    if (itemData) box.appendChild(priority);
-    if (!itemData.todoId) box.appendChild(dueDate);
+    if (!itemData.todoId) {
+      box.appendChild(descriptionInput);
+      box.appendChild(priority);
+      box.appendChild(dueDate);
+    }
     box.appendChild(buttons);
 
     return box;

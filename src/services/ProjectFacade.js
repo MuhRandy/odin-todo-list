@@ -75,7 +75,6 @@ export default class ProjectFacade {
             checklist.id
           );
 
-          currentChecklist.setPriority(checklist.priority);
           currentChecklist.setCompleteStatus(checklist.isComplete);
         });
       });

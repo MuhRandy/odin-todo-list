@@ -55,7 +55,6 @@ export default class ChecklistManager {
       todoId: checklist.getTodoId(),
       projectId: checklist.getProjectId(),
       isComplete: checklist.isComplete(),
-      priority: checklist.getPriority(),
     };
   }
 
