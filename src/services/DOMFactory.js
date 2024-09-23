@@ -5,9 +5,9 @@ import ProjectFacade from "./ProjectFacade";
 
 export default class DOMFactory {
   static createTodos(projectId) {
-    const todosContainer = this.#createContainer("todos");
+    const todosContainer = this.createContainer("todos");
     const todoManager = ProjectFacade.getTodoManager(projectId);
-    const addTodo = this.#createButtonWithIcon("pencil-plus");
+    const addTodo = this.createButtonWithIcon("pencil-plus");
     const buttonText = document.createElement("span");
 
     buttonText.textContent = "Add To-Do";
@@ -17,13 +17,11 @@ export default class DOMFactory {
     );
 
     todoManager.getTodosData(projectId).map((todo) => {
-      const container = this.#createContainer("todo");
+      const container = this.createContainer("todo");
       const titleWithIcon = this.#createTitleWithIcon(todo);
-      const descriptionContainer = this.#createContainer("description");
+      const descriptionContainer = this.createContainer("description");
       const description = document.createElement("p");
-      const checklistNumberAndPriority = this.#createContainer(
-        "checklist-number-and-priority"
-      );
+      const detail = this.createContainer("checklist-number-and-priority");
       const checklistNumber = this.#createIconWithDescription(
         "subtask",
         "checklist-number",
@@ -41,14 +39,14 @@ export default class DOMFactory {
       );
       const checklists = this.#createChecklists(projectId, todo.id);
 
-      checklistNumberAndPriority.appendChild(checklistNumber);
-      if (todo.dueDate) checklistNumberAndPriority.appendChild(dueDate);
-      checklistNumberAndPriority.appendChild(priority);
+      detail.appendChild(checklistNumber);
+      if (todo.dueDate) detail.appendChild(dueDate);
+      detail.appendChild(priority);
 
       description.textContent = todo.description;
 
       descriptionContainer.appendChild(description);
-      descriptionContainer.appendChild(checklistNumberAndPriority);
+      descriptionContainer.appendChild(detail);
 
       container.appendChild(titleWithIcon);
       container.appendChild(descriptionContainer);
@@ -88,7 +86,7 @@ export default class DOMFactory {
   }
 
   static createAddItemBoxDialog(itemType, itemData = null) {
-    const box = this.#createContainer("box");
+    const box = this.createContainer("box");
     const heading = document.createElement("h1");
     const title = document.createElement("input");
     const description = document.createElement("textarea");
@@ -149,7 +147,7 @@ export default class DOMFactory {
   }
 
   static createDeleteItemBoxDialog(itemData) {
-    const box = this.#createContainer("box");
+    const box = this.createContainer("box");
     const heading = document.createElement("h1");
     const p = document.createElement("p");
     const buttons = this.#createButtonsBoxDialog("delete", "Delete", () =>
@@ -168,8 +166,8 @@ export default class DOMFactory {
     return box;
   }
 
-  static createEditItemBoxDialog(itemData) {
-    const box = this.#createContainer("box");
+  static createEditItemBoxDialog(itemType, itemData) {
+    const box = this.createContainer("box");
     const heading = document.createElement("h1");
     const titleInput = document.createElement("input");
     const descriptionInput = document.createElement("textarea");
@@ -212,7 +210,7 @@ export default class DOMFactory {
       )
     );
 
-    heading.textContent = `Edit ${itemData.todoId ? "Checklist" : "To Do"}`;
+    heading.textContent = `Edit ${itemType}`;
 
     titleInput.value = itemData.title;
     descriptionInput.textContent = itemData.description;
@@ -221,7 +219,7 @@ export default class DOMFactory {
 
     box.appendChild(heading);
     box.appendChild(titleInput);
-    if (!itemData.todoId) {
+    if (itemType === "To-Do") {
       box.appendChild(descriptionInput);
       box.appendChild(priority);
       box.appendChild(dueDate);
@@ -276,7 +274,7 @@ export default class DOMFactory {
     confirmClickHandler
   ) {
     const dialog = document.querySelector("dialog");
-    const buttons = this.#createContainer("buttons");
+    const buttons = this.createContainer("buttons");
     const cancelButton = this.#createButton("cancel", "Cancel");
     const confirmButton = this.#createButton(confirmClassName, confirmText);
 
@@ -324,7 +322,7 @@ export default class DOMFactory {
     return label;
   }
 
-  static #createContainer(className) {
+  static createContainer(className) {
     const div = document.createElement("div");
 
     div.className = className;
@@ -333,7 +331,7 @@ export default class DOMFactory {
   }
 
   static #createTitle(itemData) {
-    const titleContainer = this.#createContainer("title");
+    const titleContainer = this.createContainer("title");
     const checkbox = this.#createCheckbox(itemData);
     const titleLabel = this.#createLabel(itemData.id, itemData.title);
 
@@ -344,19 +342,22 @@ export default class DOMFactory {
   }
 
   static #createTitleWithIcon(itemData) {
-    const container = this.#createContainer("title-with-icon");
+    const container = this.createContainer("title-with-icon");
     const titleContainer = this.#createTitle(itemData);
-    const iconContainer = this.#createContainer("icon");
-    const addIcon = this.#createButtonWithIcon("plus");
-    const editIcon = this.#createButtonWithIcon("edit");
-    const deleteIcon = this.#createButtonWithIcon("trash");
+    const iconContainer = this.createContainer("icon");
+    const addIcon = this.createButtonWithIcon("plus");
+    const editIcon = this.createButtonWithIcon("edit");
+    const deleteIcon = this.createButtonWithIcon("trash");
 
     addIcon.addEventListener("click", () =>
       DOMRenderer.renderAddItemDialog("Checklist", itemData)
     );
 
     editIcon.addEventListener("click", () =>
-      DOMRenderer.renderEditItemDialog(itemData)
+      DOMRenderer.renderEditItemDialog(
+        itemData.todoId ? "Checklist" : "To-Do",
+        itemData
+      )
     );
 
     deleteIcon.addEventListener("click", () =>
@@ -390,7 +391,7 @@ export default class DOMFactory {
     return button;
   }
 
-  static #createButtonWithIcon(iconCode) {
+  static createButtonWithIcon(iconCode) {
     const button = document.createElement("button");
     const icon = this.#createIcon(iconCode);
 
@@ -400,7 +401,7 @@ export default class DOMFactory {
   }
 
   static #createIconWithDescription(iconCode, className, desc) {
-    const container = this.#createContainer(className);
+    const container = this.createContainer(className);
     const icon = this.#createIcon(iconCode);
     const description = document.createElement("span");
 

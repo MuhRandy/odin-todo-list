@@ -24,21 +24,29 @@ export default class DOMRenderer {
     const projectData = ProjectManager.getProjectData(id);
 
     const main = document.querySelector(".main");
-    const projectTitle = document.createElement("h1");
+    const projectTitle = DOMFactory.createContainer("project-title");
+    const h1 = document.createElement("h1");
+    const addProject = DOMFactory.createButtonWithIcon("edit");
     const todos = DOMFactory.createTodos(id);
 
     main.textContent = "";
 
-    projectTitle.textContent = projectData.title;
-    projectTitle.dataset.id = projectData.id;
+    h1.textContent = projectData.title;
+
+    addProject.addEventListener("click", () =>
+      this.renderEditItemDialog("Project", projectData)
+    );
+
+    projectTitle.appendChild(h1);
+    projectTitle.appendChild(addProject);
 
     main.appendChild(projectTitle);
 
     main.appendChild(todos);
   }
 
-  static renderEditItemDialog(itemData) {
-    const editItemBox = DOMFactory.createEditItemBoxDialog(itemData);
+  static renderEditItemDialog(itemType, itemData) {
+    const editItemBox = DOMFactory.createEditItemBoxDialog(itemType, itemData);
 
     this.#renderBoxDialog(editItemBox);
   }

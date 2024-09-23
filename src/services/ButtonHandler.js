@@ -59,7 +59,12 @@ export default class ButtonHandler {
   }
 
   static saveChange(inputData, itemData) {
-    if (!itemData.todoId) {
+    if (!itemData.projectId) {
+      const project = ProjectManager.getProject(itemData.id);
+      project.setTitle(inputData.title);
+    }
+
+    if (!itemData.todoId && itemData.projectId) {
       const todo = ProjectFacade.getTodoManager(itemData.projectId).getTodo(
         itemData.id
       );
@@ -77,7 +82,9 @@ export default class ButtonHandler {
       checklist.setTitle(inputData.title);
     }
 
-    this.#closeDialogAndRenderChange(itemData.projectId);
+    this.#closeDialogAndRenderChange(
+      itemData.projectId ? itemData.projectId : itemData.id
+    );
   }
 
   static toggleIsComplete(itemData) {
