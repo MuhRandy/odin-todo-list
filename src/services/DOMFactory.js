@@ -1,3 +1,4 @@
+import { formatDistanceToNow } from "date-fns";
 import ButtonHandler from "./ButtonHandler";
 import DOMRenderer from "./DOMRenderer";
 import ProjectFacade from "./ProjectFacade";
@@ -33,9 +34,15 @@ export default class DOMFactory {
         `priority ${todo.priority}`,
         todo.priority
       );
+      const dueDate = this.#createIconWithDescription(
+        "calendar-due",
+        "due-date",
+        todo.dueDate ? formatDistanceToNow(todo.dueDate) : ""
+      );
       const checklists = this.#createChecklists(projectId, todo.id);
 
       checklistNumberAndPriority.appendChild(checklistNumber);
+      if (todo.dueDate) checklistNumberAndPriority.appendChild(dueDate);
       checklistNumberAndPriority.appendChild(priority);
 
       description.textContent = todo.description;
@@ -83,20 +90,58 @@ export default class DOMFactory {
   static createAddItemBoxDialog(itemType, itemData = null) {
     const box = this.#createContainer("box");
     const heading = document.createElement("h1");
-    const projectTitle = document.createElement("input");
+    const title = document.createElement("input");
     const description = document.createElement("textarea");
+    const priorityOptions = [
+      {
+        text: "urgent",
+      },
+      {
+        text: "important",
+      },
+      {
+        text: "normal",
+        selected: true,
+      },
+      {
+        text: "low",
+      },
+    ];
+    const priorityInput = this.#createSelectInput(priorityOptions);
+    const priority = this.#createLabelWithContainer(
+      "Priority :",
+      "priority",
+      priorityInput
+    );
+    const dueDateInput = this.#createDateInput();
+    const dueDate = this.#createLabelWithContainer(
+      "Due date :",
+      "due-date",
+      dueDateInput
+    );
     const buttons = this.#createButtonsBoxDialog("add", "Add", () =>
-      ButtonHandler.addProject(projectTitle.value, itemData, description.value)
+      ButtonHandler.addProject(
+        {
+          title: title.value,
+          description: description.value,
+          priority: priorityInput.value,
+          dueDate: dueDateInput.value,
+        },
+        itemData
+      )
     );
 
     heading.textContent = `Add New ${itemType}`;
 
-    projectTitle.placeholder = "New Project";
+    title.placeholder = `New ${itemType}`;
     description.placeholder = "description...";
 
     box.appendChild(heading);
-    box.appendChild(projectTitle);
+    box.appendChild(title);
     if (itemType === "To-Do") box.appendChild(description);
+    if (itemType === "To-Do" || itemType === "Checklist")
+      box.appendChild(priority);
+    if (itemType === "To-Do") box.appendChild(dueDate);
     box.appendChild(buttons);
 
     return box;
@@ -124,9 +169,36 @@ export default class DOMFactory {
 
   static createEditItemBoxDialog(itemData) {
     const box = this.#createContainer("box");
+    const heading = document.createElement("h1");
     const titleInput = document.createElement("input");
     const descriptionInput = document.createElement("textarea");
-    const heading = document.createElement("h1");
+    const priorityOptions = [
+      {
+        text: "urgent",
+      },
+      {
+        text: "important",
+      },
+      {
+        text: "normal",
+        selected: true,
+      },
+      {
+        text: "low",
+      },
+    ];
+    const priorityInput = this.#createSelectInput(priorityOptions);
+    const priority = this.#createLabelWithContainer(
+      "Priority :",
+      "priority",
+      priorityInput
+    );
+    const dueDateInput = this.#createDateInput();
+    const dueDate = this.#createLabelWithContainer(
+      "Due date :",
+      "due-date",
+      dueDateInput
+    );
     const buttons = this.#createButtonsBoxDialog("edit", "Save", () =>
       ButtonHandler.saveChange(
         itemData,
@@ -139,13 +211,56 @@ export default class DOMFactory {
 
     titleInput.value = itemData.title;
     descriptionInput.textContent = itemData.description;
+    priorityInput.value = itemData.priority;
+    dueDateInput.value = itemData.dueDate;
 
     box.appendChild(heading);
     box.appendChild(titleInput);
     if (!itemData.todoId) box.appendChild(descriptionInput);
+    if (itemData) box.appendChild(priority);
+    if (!itemData.todoId) box.appendChild(dueDate);
     box.appendChild(buttons);
 
     return box;
+  }
+
+  static #createLabelWithContainer(text, htmlFor, inputElement) {
+    const div = document.createElement("div");
+    const label = this.#createLabel(htmlFor, text);
+
+    inputElement.id = htmlFor;
+
+    div.appendChild(label);
+    div.appendChild(inputElement);
+
+    return div;
+  }
+
+  static #createSelectInput(options) {
+    const select = document.createElement("select");
+
+    options.forEach((option) => {
+      const opt = document.createElement("option");
+
+      opt.textContent = option.text;
+      opt.value = option.text;
+      opt.selected = option.selected;
+
+      select.appendChild(opt);
+    });
+
+    return select;
+  }
+
+  static #createDateInput() {
+    const input = document.createElement("input");
+    const today = new Date().toISOString().substring(0, 10);
+
+    input.type = "date";
+    input.value = today;
+    input.min = today;
+
+    return input;
   }
 
   static #createButtonsBoxDialog(

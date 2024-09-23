@@ -2,15 +2,15 @@ import ProjectFacade from "../../services/ProjectFacade";
 
 export default class Prioritizable {
   #priority = "normal";
+  #priorities = ["urgent", "important", "normal", "low"];
 
-  setPriorityByNumber(priorityNumber) {
-    const priorities = ["urgent", "important", "normal", "low"];
-
-    this.#priority = priorities[priorityNumber];
-  }
-
-  setPriority(newPriority) {
-    this.#priority = newPriority;
+  setPriority(priorityNumber) {
+    let index = priorityNumber;
+    if (isNaN(priorityNumber))
+      index = this.#priorities.findIndex(
+        (priority) => priority === priorityNumber
+      );
+    this.#priority = this.#priorities[index];
 
     ProjectFacade.saveProjects();
   }

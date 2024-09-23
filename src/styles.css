@@ -69,7 +69,7 @@ dialog .box {
   font-size: 2.2rem;
 }
 
-.box input {
+.box > input {
   border: none;
   color: var(--primary);
   font-size: 2rem;
@@ -79,6 +79,19 @@ dialog .box {
   border: none;
   color: var(--secondary);
   font: inherit;
+  font-size: inherit;
+}
+
+.box div {
+  text-align: left;
+  color: var(--secondary);
+}
+
+.box div :is(input, select) {
+  color: var(--secondary);
+  border: none;
+  background-color: transparent;
+  font-family: inherit;
   font-size: inherit;
 }
 
@@ -194,7 +207,8 @@ h1 {
 
 .checklist-number-and-priority,
 .checklist-number,
-.priority {
+.priority,
+.due-date {
   display: flex;
   align-items: center;
   gap: 2px;

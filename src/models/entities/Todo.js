@@ -1,4 +1,5 @@
 import Checker from "../../services/Checker";
+import ProjectFacade from "../../services/ProjectFacade";
 import Completable from "../behaviors/Completable";
 import Prioritizable from "../behaviors/Prioritizable";
 import ChecklistManager from "../managers/ChecklistManager";
@@ -29,16 +30,16 @@ export default class Todo {
     this.#description = newDescription;
   }
 
-  setPriorityByNumber(priorityNumber) {
-    this.#prioritizable.setPriorityByNumber(priorityNumber);
-  }
-
   setPriority(newPriority) {
     this.#prioritizable.setPriority(newPriority);
   }
 
   setDueDate(date) {
-    Checker.isDateValid(date) ? (this.#dueDate = new Date(date)) : "";
+    Checker.isDateValid(date)
+      ? (this.#dueDate = new Date(date).toISOString().substring(0, 10))
+      : "";
+
+    ProjectFacade.saveProjects();
   }
 
   setNotes(notes) {

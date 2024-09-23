@@ -3,11 +3,11 @@ import ProjectFacade from "./ProjectFacade";
 import ProjectManager from "./ProjectManager";
 
 export default class ButtonHandler {
-  static addProject(title, itemData = null, description = null) {
-    if (title.length === 0) return console.log("Title required!");
+  static addProject(inputData, itemData = null) {
+    if (inputData.title.length === 0) return console.log("Title required!");
 
     if (!itemData) {
-      const newProject = ProjectManager.createProject(title);
+      const newProject = ProjectManager.createProject(inputData.title);
 
       this.#closeDialogAndRenderChange(newProject.getId());
 
@@ -16,7 +16,13 @@ export default class ButtonHandler {
 
     if (!itemData.projectId) {
       const todoManager = ProjectFacade.getTodoManager(itemData.id);
-      const newTodo = todoManager.createTodo(title, description);
+      const newTodo = todoManager.createTodo(
+        inputData.title,
+        inputData.description
+      );
+
+      newTodo.setPriority(inputData.priority);
+      newTodo.setDueDate(inputData.dueDate);
 
       this.#closeDialogAndRenderChange(newTodo.getProjectId());
       DOMRenderer.renderProjectsList();
@@ -29,7 +35,7 @@ export default class ButtonHandler {
         itemData.projectId,
         itemData.id
       );
-      const newChecklist = checklistManager.addChecklistItem(title);
+      const newChecklist = checklistManager.addChecklistItem(inputData.title);
 
       this.#closeDialogAndRenderChange(newChecklist.getProjectId());
     }
