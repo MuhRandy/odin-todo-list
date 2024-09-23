@@ -58,13 +58,15 @@ export default class ButtonHandler {
     this.#closeDialogAndRenderChange(itemData.projectId);
   }
 
-  static saveChange(itemData, newTitle, newDescription = null) {
+  static saveChange(inputData, itemData) {
     if (!itemData.todoId) {
       const todo = ProjectFacade.getTodoManager(itemData.projectId).getTodo(
         itemData.id
       );
-      todo.setTitle(newTitle);
-      todo.setDescription(newDescription);
+      todo.setTitle(inputData.title);
+      todo.setDescription(inputData.description);
+      todo.setPriority(inputData.priority);
+      todo.setDueDate(inputData.dueDate);
     }
 
     if (itemData.todoId) {
@@ -72,7 +74,7 @@ export default class ButtonHandler {
         itemData.projectId,
         itemData.todoId
       ).getChecklist(itemData.id);
-      checklist.setTitle(newTitle);
+      checklist.setTitle(inputData.title);
     }
 
     this.#closeDialogAndRenderChange(itemData.projectId);

@@ -201,9 +201,13 @@ export default class DOMFactory {
     );
     const buttons = this.#createButtonsBoxDialog("edit", "Save", () =>
       ButtonHandler.saveChange(
-        itemData,
-        titleInput.value,
-        descriptionInput.value
+        {
+          title: titleInput.value,
+          description: descriptionInput.value,
+          priority: priorityInput.value,
+          dueDate: dueDateInput.value,
+        },
+        itemData
       )
     );
 
