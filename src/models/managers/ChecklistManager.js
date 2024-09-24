@@ -11,7 +11,7 @@ export default class ChecklistManager {
     this.#projectId = projectId;
   }
 
-  addChecklistItem(title, id) {
+  addChecklistItem(title, id = new Date().getTime()) {
     const newChecklist = new Checklist(
       title,
       this.#projectId,
