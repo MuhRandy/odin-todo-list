@@ -6,6 +6,7 @@ ProjectFacade.loadProjects();
 
 DOMRenderer.renderProjectsList();
 
+// eslint-disable-next-line no-undef
 const addProjectButton = document.querySelector(".heading button");
 
 addProjectButton.addEventListener("click", () =>

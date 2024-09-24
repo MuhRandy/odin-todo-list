@@ -8,6 +8,7 @@ export default class DOMFactory {
     const todosContainer = this.createContainer("todos");
     const todoManager = ProjectFacade.getTodoManager(projectId);
     const addTodo = this.createButtonWithIcon("pencil-plus");
+    // eslint-disable-next-line no-undef
     const buttonText = document.createElement("span");
 
     buttonText.textContent = "Add To-Do";
@@ -20,6 +21,7 @@ export default class DOMFactory {
       const container = this.createContainer("todo");
       const titleWithIcon = this.#createTitleWithIcon(todo);
       const descriptionContainer = this.createContainer("description");
+      // eslint-disable-next-line no-undef
       const description = document.createElement("p");
       const detail = this.createContainer("checklist-number-and-priority");
       const checklistNumber = this.#createIconWithDescription(
@@ -64,6 +66,7 @@ export default class DOMFactory {
   }
 
   static #createChecklists(projectId, todoId) {
+    // eslint-disable-next-line no-undef
     const checklistsContainer = document.createElement("ul");
 
     checklistsContainer.className = "checklists";
@@ -74,6 +77,7 @@ export default class DOMFactory {
     );
 
     checklistManager.getChecklistsData(projectId, todoId).map((checklist) => {
+      // eslint-disable-next-line no-undef
       const li = document.createElement("li");
       const titleWithIcon = this.#createTitleWithIcon(checklist);
 
@@ -87,8 +91,11 @@ export default class DOMFactory {
 
   static createAddItemBoxDialog(itemType, itemData = null) {
     const box = this.createContainer("box");
+    // eslint-disable-next-line no-undef
     const heading = document.createElement("h1");
+    // eslint-disable-next-line no-undef
     const title = document.createElement("input");
+    // eslint-disable-next-line no-undef
     const description = document.createElement("textarea");
     const priorityOptions = [
       {
@@ -149,7 +156,9 @@ export default class DOMFactory {
 
   static createDeleteItemBoxDialog(itemType, itemData) {
     const box = this.createContainer("box");
+    // eslint-disable-next-line no-undef
     const heading = document.createElement("h1");
+    // eslint-disable-next-line no-undef
     const p = document.createElement("p");
     const buttons = this.#createButtonsBoxDialog("delete", "Delete", () =>
       ButtonHandler.deleteItem(itemData)
@@ -167,8 +176,11 @@ export default class DOMFactory {
 
   static createEditItemBoxDialog(itemType, itemData) {
     const box = this.createContainer("box");
+    // eslint-disable-next-line no-undef
     const heading = document.createElement("h1");
+    // eslint-disable-next-line no-undef
     const titleInput = document.createElement("input");
+    // eslint-disable-next-line no-undef
     const descriptionInput = document.createElement("textarea");
     const priorityOptions = [
       {
@@ -229,6 +241,7 @@ export default class DOMFactory {
   }
 
   static #createLabelWithContainer(text, htmlFor, inputElement) {
+    // eslint-disable-next-line no-undef
     const div = document.createElement("div");
     const label = this.#createLabel(htmlFor, text);
 
@@ -241,9 +254,11 @@ export default class DOMFactory {
   }
 
   static #createSelectInput(options) {
+    // eslint-disable-next-line no-undef
     const select = document.createElement("select");
 
     options.forEach((option) => {
+      // eslint-disable-next-line no-undef
       const opt = document.createElement("option");
 
       opt.textContent = option.text;
@@ -257,6 +272,7 @@ export default class DOMFactory {
   }
 
   static #createDateInput() {
+    // eslint-disable-next-line no-undef
     const input = document.createElement("input");
     const today = new Date().toISOString().substring(0, 10);
 
@@ -272,6 +288,7 @@ export default class DOMFactory {
     confirmText,
     confirmClickHandler
   ) {
+    // eslint-disable-next-line no-undef
     const dialog = document.querySelector("dialog");
     const buttons = this.createContainer("buttons");
     const cancelButton = this.#createButton("cancel", "Cancel");
@@ -291,6 +308,7 @@ export default class DOMFactory {
   }
 
   static #createCheckbox(itemData) {
+    // eslint-disable-next-line no-undef
     const checkbox = document.createElement("input");
     const checkboxState = itemData.isComplete;
 
@@ -313,6 +331,7 @@ export default class DOMFactory {
   }
 
   static #createLabel(id, textContent) {
+    // eslint-disable-next-line no-undef
     const label = document.createElement("label");
 
     label.htmlFor = id;
@@ -322,6 +341,7 @@ export default class DOMFactory {
   }
 
   static createContainer(className) {
+    // eslint-disable-next-line no-undef
     const div = document.createElement("div");
 
     div.className = className;
@@ -377,6 +397,7 @@ export default class DOMFactory {
   }
 
   static #createIcon(iconCode) {
+    // eslint-disable-next-line no-undef
     const icon = document.createElement("i");
 
     icon.className = `ti ti-${iconCode}`;
@@ -385,6 +406,7 @@ export default class DOMFactory {
   }
 
   static #createButton(className, text) {
+    // eslint-disable-next-line no-undef
     const button = document.createElement("button");
 
     button.className = className;
@@ -394,6 +416,7 @@ export default class DOMFactory {
   }
 
   static createButtonWithIcon(iconCode) {
+    // eslint-disable-next-line no-undef
     const button = document.createElement("button");
     const icon = this.#createIcon(iconCode);
 
@@ -405,6 +428,7 @@ export default class DOMFactory {
   static #createIconWithDescription(iconCode, className, desc) {
     const container = this.createContainer(className);
     const icon = this.#createIcon(iconCode);
+    // eslint-disable-next-line no-undef
     const description = document.createElement("span");
 
     description.textContent = desc;

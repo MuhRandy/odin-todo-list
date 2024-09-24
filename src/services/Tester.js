@@ -555,6 +555,7 @@ export default class Tester {
     const todoData = this.#getTodoTestData();
     const checklistData = this.#getChecklistTestData();
 
+    // eslint-disable-next-line no-undef
     console.log(`
         This test will delete:
          - Project "${projectData.title}"
@@ -588,6 +589,7 @@ export default class Tester {
     const todoData = this.#getTodoTestData();
     const checklistData = this.#getChecklistTestData();
 
+    // eslint-disable-next-line no-undef
     console.log(`
         This test will get data from:
          - Project "${projectData.title}"
@@ -599,15 +601,18 @@ export default class Tester {
 
     ProjectManager.load();
 
+    // eslint-disable-next-line no-undef
     console.log(ProjectManager.getProjectData(projectData.id));
 
     const todoManager = ProjectFacade.getTodoManager(todoData.projectId);
+    // eslint-disable-next-line no-undef
     console.log(todoManager.getTodoData(todoData.id));
 
     const checklistManager = ProjectFacade.getChecklistManager(
       checklistData.projectId,
       checklistData.todoId
     );
+    // eslint-disable-next-line no-undef
     console.log(checklistManager.getChecklistData(checklistData.id));
   }
 }

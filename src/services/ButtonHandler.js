@@ -4,19 +4,22 @@ import ProjectManager from "./ProjectManager";
 
 export default class ButtonHandler {
   static addProject(inputData, itemType, itemData = null) {
+    // eslint-disable-next-line no-undef
     console.log(inputData);
 
+    // eslint-disable-next-line no-undef
     if (inputData.title.length === 0) return console.log("Title required!");
 
     switch (itemType) {
-      case "Project":
+      case "Project": {
         const newProject = ProjectManager.createProject(inputData.title);
 
         this.#closeDialogAndRenderChange(newProject.getId());
 
         break;
+      }
 
-      case "To-Do":
+      case "To-Do": {
         const todoManager = ProjectFacade.getTodoManager(itemData.id);
         const newTodo = todoManager.createTodo(
           inputData.title,
@@ -29,12 +32,14 @@ export default class ButtonHandler {
         this.#closeDialogAndRenderChange(newTodo.getProjectId());
 
         break;
+      }
 
-      case "Checklist":
+      case "Checklist": {
         const checklistManager = ProjectFacade.getChecklistManager(
           itemData.projectId,
           itemData.id
         );
+        // eslint-disable-next-line no-undef
         console.log("masuk");
 
         const newChecklist = checklistManager.addChecklistItem(inputData.title);
@@ -42,6 +47,7 @@ export default class ButtonHandler {
         this.#closeDialogAndRenderChange(newChecklist.getProjectId());
 
         break;
+      }
 
       default:
         throw new Error(`item type ${itemType} not recognized`);
@@ -120,6 +126,7 @@ export default class ButtonHandler {
   }
 
   static #closeDialogAndRenderChange(projectId = null) {
+    // eslint-disable-next-line no-undef
     const dialog = document.querySelector("dialog");
 
     dialog.close();

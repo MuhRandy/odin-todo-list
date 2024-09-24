@@ -4,12 +4,15 @@ import ProjectManager from "./ProjectManager";
 
 export default class DOMRenderer {
   static renderProjectsList() {
+    // eslint-disable-next-line no-undef
     const projects = document.querySelector(".projects");
 
     projects.textContent = "";
 
     ProjectManager.getProjectsData().map((project, i) => {
+      // eslint-disable-next-line no-undef
       const li = document.createElement("li");
+      // eslint-disable-next-line no-undef
       const button = document.createElement("button");
 
       button.textContent = project.title;
@@ -30,8 +33,10 @@ export default class DOMRenderer {
   static renderProject(id) {
     const projectData = ProjectManager.getProjectData(id);
 
+    // eslint-disable-next-line no-undef
     const main = document.querySelector(".main");
     const projectTitle = DOMFactory.createContainer("project-title");
+    // eslint-disable-next-line no-undef
     const h1 = document.createElement("h1");
     const editProject = DOMFactory.createButtonWithIcon("edit");
     const deleteProject = DOMFactory.createButtonWithIcon("trash");
@@ -80,6 +85,7 @@ export default class DOMRenderer {
   }
 
   static #renderBoxDialog(box) {
+    // eslint-disable-next-line no-undef
     const dialog = document.querySelector("dialog");
 
     dialog.textContent = "";
