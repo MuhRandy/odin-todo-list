@@ -45,11 +45,13 @@ export default class ProjectFacade {
   static loadProjects() {
     const loadedProjects = LocalStorageService.load("projects");
 
-    if (!loadedProjects) {
-      LocalStorageService.save("projects", {
-        title: "Default",
-        id: new Date().getTime(),
-      });
+    if (!loadedProjects || loadedProjects.length === 0) {
+      LocalStorageService.save("projects", [
+        {
+          title: "Default",
+          id: new Date().getTime(),
+        },
+      ]);
 
       this.loadProjects();
     }
@@ -66,7 +68,7 @@ export default class ProjectFacade {
 
       const todoManager = currentProject.getTodoManager();
 
-      project.todos.forEach((todo) => {
+      project.todos?.forEach((todo) => {
         const currentTodo = todoManager.createTodo(
           todo.title,
           todo.description,

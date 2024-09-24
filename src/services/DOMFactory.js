@@ -125,6 +125,7 @@ export default class DOMFactory {
           priority: priorityInput.value,
           dueDate: dueDateInput.value,
         },
+        itemType,
         itemData
       )
     );
@@ -146,7 +147,7 @@ export default class DOMFactory {
     return box;
   }
 
-  static createDeleteItemBoxDialog(itemData) {
+  static createDeleteItemBoxDialog(itemType, itemData) {
     const box = this.createContainer("box");
     const heading = document.createElement("h1");
     const p = document.createElement("p");
@@ -154,10 +155,8 @@ export default class DOMFactory {
       ButtonHandler.deleteItem(itemData)
     );
 
-    heading.textContent = `Delete ${itemData.todoId ? "Checklist" : "To Do"}?`;
-    p.textContent = `${itemData.todoId ? "Checklist" : "To Do"} "${
-      itemData.title
-    }" will be permanently deleted`;
+    heading.textContent = `Delete ${itemType}?`;
+    p.textContent = `${itemType} "${itemData.title}" will be permanently deleted`;
 
     box.appendChild(heading);
     box.appendChild(p);
@@ -361,7 +360,10 @@ export default class DOMFactory {
     );
 
     deleteIcon.addEventListener("click", () =>
-      DOMRenderer.renderDeleteItemDialog(itemData)
+      DOMRenderer.renderDeleteItemDialog(
+        itemData.todoId ? "Checklist" : "To-Do",
+        itemData
+      )
     );
 
     if (!itemData.todoId) iconContainer.appendChild(addIcon);

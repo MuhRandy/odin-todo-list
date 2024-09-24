@@ -1,4 +1,5 @@
 import DOMFactory from "./DOMFactory";
+import ProjectFacade from "./ProjectFacade";
 import ProjectManager from "./ProjectManager";
 
 export default class DOMRenderer {
@@ -20,6 +21,10 @@ export default class DOMRenderer {
 
       if (i === 0) this.renderProject(project.id);
     });
+
+    if (ProjectManager.getProjectsData().length === 0) {
+      ProjectFacade.loadProjects();
+    }
   }
 
   static renderProject(id) {
@@ -28,19 +33,25 @@ export default class DOMRenderer {
     const main = document.querySelector(".main");
     const projectTitle = DOMFactory.createContainer("project-title");
     const h1 = document.createElement("h1");
-    const addProject = DOMFactory.createButtonWithIcon("edit");
+    const editProject = DOMFactory.createButtonWithIcon("edit");
+    const deleteProject = DOMFactory.createButtonWithIcon("trash");
     const todos = DOMFactory.createTodos(id);
 
     main.textContent = "";
 
     h1.textContent = projectData.title;
 
-    addProject.addEventListener("click", () =>
+    editProject.addEventListener("click", () =>
       this.renderEditItemDialog("Project", projectData)
     );
 
+    deleteProject.addEventListener("click", () =>
+      this.renderDeleteItemDialog("Project", projectData)
+    );
+
     projectTitle.appendChild(h1);
-    projectTitle.appendChild(addProject);
+    projectTitle.appendChild(editProject);
+    projectTitle.appendChild(deleteProject);
 
     main.appendChild(projectTitle);
 
@@ -53,8 +64,11 @@ export default class DOMRenderer {
     this.#renderBoxDialog(editItemBox);
   }
 
-  static renderDeleteItemDialog(itemData) {
-    const deleteItemBox = DOMFactory.createDeleteItemBoxDialog(itemData);
+  static renderDeleteItemDialog(itemType, itemData) {
+    const deleteItemBox = DOMFactory.createDeleteItemBoxDialog(
+      itemType,
+      itemData
+    );
 
     this.#renderBoxDialog(deleteItemBox);
   }

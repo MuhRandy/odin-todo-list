@@ -3,46 +3,59 @@ import ProjectFacade from "./ProjectFacade";
 import ProjectManager from "./ProjectManager";
 
 export default class ButtonHandler {
-  static addProject(inputData, itemData = null) {
+  static addProject(inputData, itemType, itemData = null) {
+    console.log(inputData);
+
     if (inputData.title.length === 0) return console.log("Title required!");
 
-    if (!itemData) {
-      const newProject = ProjectManager.createProject(inputData.title);
+    switch (itemType) {
+      case "Project":
+        const newProject = ProjectManager.createProject(inputData.title);
 
-      this.#closeDialogAndRenderChange(newProject.getId());
+        this.#closeDialogAndRenderChange(newProject.getId());
 
-      return;
-    }
+        break;
 
-    if (!itemData.projectId) {
-      const todoManager = ProjectFacade.getTodoManager(itemData.id);
-      const newTodo = todoManager.createTodo(
-        inputData.title,
-        inputData.description
-      );
+      case "To-Do":
+        const todoManager = ProjectFacade.getTodoManager(itemData.id);
+        const newTodo = todoManager.createTodo(
+          inputData.title,
+          inputData.description
+        );
 
-      newTodo.setPriority(inputData.priority);
-      newTodo.setDueDate(inputData.dueDate);
+        newTodo.setPriority(inputData.priority);
+        newTodo.setDueDate(inputData.dueDate);
 
-      this.#closeDialogAndRenderChange(newTodo.getProjectId());
-      DOMRenderer.renderProjectsList();
+        this.#closeDialogAndRenderChange(newTodo.getProjectId());
 
-      return;
-    }
+        break;
 
-    if (itemData.projectId) {
-      const checklistManager = ProjectFacade.getChecklistManager(
-        itemData.projectId,
-        itemData.id
-      );
-      const newChecklist = checklistManager.addChecklistItem(inputData.title);
+      case "Checklist":
+        const checklistManager = ProjectFacade.getChecklistManager(
+          itemData.projectId,
+          itemData.id
+        );
+        console.log("masuk");
 
-      this.#closeDialogAndRenderChange(newChecklist.getProjectId());
+        const newChecklist = checklistManager.addChecklistItem(inputData.title);
+
+        this.#closeDialogAndRenderChange(newChecklist.getProjectId());
+
+        break;
+
+      default:
+        throw new Error(`item type ${itemType} not recognized`);
     }
   }
 
   static deleteItem(itemData) {
-    if (!itemData.todoId) {
+    if (!itemData.projectId) {
+      ProjectManager.deleteProject(itemData.id);
+
+      this.#closeDialogAndRenderChange();
+    }
+
+    if (!itemData.todoId && itemData.projectId) {
       const todoManager = ProjectFacade.getTodoManager(itemData.projectId);
       todoManager.deleteTodo(itemData.id);
     }
@@ -106,10 +119,14 @@ export default class ButtonHandler {
     }
   }
 
-  static #closeDialogAndRenderChange(projectId) {
+  static #closeDialogAndRenderChange(projectId = null) {
     const dialog = document.querySelector("dialog");
 
     dialog.close();
+
+    DOMRenderer.renderProjectsList();
+
+    if (!projectId) return;
 
     DOMRenderer.renderProject(projectId);
   }
