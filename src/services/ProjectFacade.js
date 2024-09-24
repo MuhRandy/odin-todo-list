@@ -45,6 +45,15 @@ export default class ProjectFacade {
   static loadProjects() {
     const loadedProjects = LocalStorageService.load("projects");
 
+    if (!loadedProjects) {
+      LocalStorageService.save("projects", {
+        title: "Default",
+        id: new Date().getTime(),
+      });
+
+      this.loadProjects();
+    }
+
     this.transform(loadedProjects);
   }
 

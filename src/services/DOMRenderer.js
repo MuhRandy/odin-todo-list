@@ -7,7 +7,7 @@ export default class DOMRenderer {
 
     projects.textContent = "";
 
-    ProjectManager.getProjectsData().map((project) => {
+    ProjectManager.getProjectsData().map((project, i) => {
       const li = document.createElement("li");
       const button = document.createElement("button");
 
@@ -17,6 +17,8 @@ export default class DOMRenderer {
       li.appendChild(button);
 
       projects.appendChild(li);
+
+      if (i === 0) this.renderProject(project.id);
     });
   }
 
