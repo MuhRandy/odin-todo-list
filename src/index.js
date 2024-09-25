@@ -10,5 +10,5 @@ DOMRenderer.renderProjectsList();
 const addProjectButton = document.querySelector(".heading button");
 
 addProjectButton.addEventListener("click", () =>
-  DOMRenderer.renderAddItemDialog("Project")
+  DOMRenderer.renderAddItemDialog("Project"),
 );

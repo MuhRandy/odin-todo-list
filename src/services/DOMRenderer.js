@@ -47,11 +47,11 @@ export default class DOMRenderer {
     h1.textContent = projectData.title;
 
     editProject.addEventListener("click", () =>
-      this.renderEditItemDialog("Project", projectData)
+      this.renderEditItemDialog("Project", projectData),
     );
 
     deleteProject.addEventListener("click", () =>
-      this.renderDeleteItemDialog("Project", projectData)
+      this.renderDeleteItemDialog("Project", projectData),
     );
 
     projectTitle.appendChild(h1);
@@ -72,7 +72,7 @@ export default class DOMRenderer {
   static renderDeleteItemDialog(itemType, itemData) {
     const deleteItemBox = DOMFactory.createDeleteItemBoxDialog(
       itemType,
-      itemData
+      itemData,
     );
 
     this.#renderBoxDialog(deleteItemBox);

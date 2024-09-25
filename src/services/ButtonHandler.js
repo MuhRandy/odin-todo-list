@@ -23,7 +23,7 @@ export default class ButtonHandler {
         const todoManager = ProjectFacade.getTodoManager(itemData.id);
         const newTodo = todoManager.createTodo(
           inputData.title,
-          inputData.description
+          inputData.description,
         );
 
         newTodo.setPriority(inputData.priority);
@@ -37,7 +37,7 @@ export default class ButtonHandler {
       case "Checklist": {
         const checklistManager = ProjectFacade.getChecklistManager(
           itemData.projectId,
-          itemData.id
+          itemData.id,
         );
         // eslint-disable-next-line no-undef
         console.log("masuk");
@@ -69,7 +69,7 @@ export default class ButtonHandler {
     if (itemData.todoId) {
       const checklistManager = ProjectFacade.getChecklistManager(
         itemData.projectId,
-        itemData.todoId
+        itemData.todoId,
       );
       checklistManager.deleteChecklist(itemData.id);
     }
@@ -85,7 +85,7 @@ export default class ButtonHandler {
 
     if (!itemData.todoId && itemData.projectId) {
       const todo = ProjectFacade.getTodoManager(itemData.projectId).getTodo(
-        itemData.id
+        itemData.id,
       );
       todo.setTitle(inputData.title);
       todo.setDescription(inputData.description);
@@ -96,20 +96,20 @@ export default class ButtonHandler {
     if (itemData.todoId) {
       const checklist = ProjectFacade.getChecklistManager(
         itemData.projectId,
-        itemData.todoId
+        itemData.todoId,
       ).getChecklist(itemData.id);
       checklist.setTitle(inputData.title);
     }
 
     this.#closeDialogAndRenderChange(
-      itemData.projectId ? itemData.projectId : itemData.id
+      itemData.projectId ? itemData.projectId : itemData.id,
     );
   }
 
   static toggleIsComplete(itemData) {
     if (!itemData.todoId) {
       const todo = ProjectFacade.getTodoManager(itemData.projectId).getTodo(
-        itemData.id
+        itemData.id,
       );
 
       todo.toggleComplete();
@@ -118,7 +118,7 @@ export default class ButtonHandler {
     if (itemData.todoId) {
       const checklist = ProjectFacade.getChecklistManager(
         itemData.projectId,
-        itemData.todoId
+        itemData.todoId,
       ).getChecklist(itemData.id);
 
       checklist.toggleComplete();

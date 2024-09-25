@@ -16,7 +16,7 @@ export default class ChecklistManager {
       title,
       this.#projectId,
       this.#todoId,
-      id
+      id,
     );
 
     this.#checklists.push(newChecklist);
@@ -30,7 +30,7 @@ export default class ChecklistManager {
     Checker.isItemExist(this.#checklists, id);
 
     this.#checklists = this.#checklists.filter(
-      (checklist) => checklist.getId() !== id
+      (checklist) => checklist.getId() !== id,
     );
 
     ProjectFacade.saveProjects();
@@ -60,7 +60,7 @@ export default class ChecklistManager {
 
   getChecklistsData() {
     return this.getChecklists().map((checklist) =>
-      this.getChecklistData(checklist.getId())
+      this.getChecklistData(checklist.getId()),
     );
   }
 }

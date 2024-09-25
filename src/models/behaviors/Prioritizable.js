@@ -8,7 +8,7 @@ export default class Prioritizable {
     let index = priorityNumber;
     if (isNaN(priorityNumber))
       index = this.#priorities.findIndex(
-        (priority) => priority === priorityNumber
+        (priority) => priority === priorityNumber,
       );
     this.#priority = this.#priorities[index];
 

@@ -26,10 +26,10 @@ export default class ProjectFacade {
             checklists: todo.getChecklists().map((checklist) => {
               const checklistManager = this.getChecklistManager(
                 project.getId(),
-                todo.getId()
+                todo.getId(),
               );
               const checklistData = checklistManager.getChecklistData(
-                checklist.getId()
+                checklist.getId(),
               );
 
               return checklistData;
@@ -63,7 +63,7 @@ export default class ProjectFacade {
     projects?.forEach((project) => {
       const currentProject = ProjectManager.createProject(
         project.title,
-        project.id
+        project.id,
       );
 
       const todoManager = currentProject.getTodoManager();
@@ -72,7 +72,7 @@ export default class ProjectFacade {
         const currentTodo = todoManager.createTodo(
           todo.title,
           todo.description,
-          todo.id
+          todo.id,
         );
 
         currentTodo.setNotes(todo.notes);
@@ -83,7 +83,7 @@ export default class ProjectFacade {
         todo.checklists.forEach((checklist) => {
           const currentChecklist = currentTodo.addChecklistItem(
             checklist.title,
-            checklist.id
+            checklist.id,
           );
 
           currentChecklist.setCompleteStatus(checklist.isComplete);

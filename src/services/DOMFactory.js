@@ -14,7 +14,7 @@ export default class DOMFactory {
     buttonText.textContent = "Add To-Do";
     addTodo.className = "add-to-do";
     addTodo.addEventListener("click", () =>
-      DOMRenderer.renderAddItemDialog("To-Do", { id: projectId })
+      DOMRenderer.renderAddItemDialog("To-Do", { id: projectId }),
     );
 
     todoManager.getTodosData(projectId).map((todo) => {
@@ -27,17 +27,17 @@ export default class DOMFactory {
       const checklistNumber = this.#createIconWithDescription(
         "subtask",
         "checklist-number",
-        todo.checklistNumber
+        todo.checklistNumber,
       );
       const priority = this.#createIconWithDescription(
         "info-circle",
         `priority ${todo.priority}`,
-        todo.priority
+        todo.priority,
       );
       const dueDate = this.#createIconWithDescription(
         "calendar-due",
         "due-date",
-        todo.dueDate ? formatDistanceToNow(todo.dueDate) : ""
+        todo.dueDate ? formatDistanceToNow(todo.dueDate) : "",
       );
       const checklists = this.#createChecklists(projectId, todo.id);
 
@@ -73,7 +73,7 @@ export default class DOMFactory {
 
     const checklistManager = ProjectFacade.getChecklistManager(
       projectId,
-      todoId
+      todoId,
     );
 
     checklistManager.getChecklistsData(projectId, todoId).map((checklist) => {
@@ -116,13 +116,13 @@ export default class DOMFactory {
     const priority = this.#createLabelWithContainer(
       "Priority :",
       "priority",
-      priorityInput
+      priorityInput,
     );
     const dueDateInput = this.#createDateInput();
     const dueDate = this.#createLabelWithContainer(
       "Due date :",
       "due-date",
-      dueDateInput
+      dueDateInput,
     );
     const buttons = this.#createButtonsBoxDialog("add", "Add", () =>
       ButtonHandler.addProject(
@@ -133,8 +133,8 @@ export default class DOMFactory {
           dueDate: dueDateInput.value,
         },
         itemType,
-        itemData
-      )
+        itemData,
+      ),
     );
 
     heading.textContent = `Add New ${itemType}`;
@@ -161,7 +161,7 @@ export default class DOMFactory {
     // eslint-disable-next-line no-undef
     const p = document.createElement("p");
     const buttons = this.#createButtonsBoxDialog("delete", "Delete", () =>
-      ButtonHandler.deleteItem(itemData)
+      ButtonHandler.deleteItem(itemData),
     );
 
     heading.textContent = `Delete ${itemType}?`;
@@ -201,13 +201,13 @@ export default class DOMFactory {
     const priority = this.#createLabelWithContainer(
       "Priority :",
       "priority",
-      priorityInput
+      priorityInput,
     );
     const dueDateInput = this.#createDateInput();
     const dueDate = this.#createLabelWithContainer(
       "Due date :",
       "due-date",
-      dueDateInput
+      dueDateInput,
     );
     const buttons = this.#createButtonsBoxDialog("edit", "Save", () =>
       ButtonHandler.saveChange(
@@ -217,8 +217,8 @@ export default class DOMFactory {
           priority: priorityInput.value,
           dueDate: dueDateInput.value,
         },
-        itemData
-      )
+        itemData,
+      ),
     );
 
     heading.textContent = `Edit ${itemType}`;
@@ -286,7 +286,7 @@ export default class DOMFactory {
   static #createButtonsBoxDialog(
     confirmClassName,
     confirmText,
-    confirmClickHandler
+    confirmClickHandler,
   ) {
     // eslint-disable-next-line no-undef
     const dialog = document.querySelector("dialog");
@@ -369,21 +369,21 @@ export default class DOMFactory {
     const deleteIcon = this.createButtonWithIcon("trash");
 
     addIcon.addEventListener("click", () =>
-      DOMRenderer.renderAddItemDialog("Checklist", itemData)
+      DOMRenderer.renderAddItemDialog("Checklist", itemData),
     );
 
     editIcon.addEventListener("click", () =>
       DOMRenderer.renderEditItemDialog(
         itemData.todoId ? "Checklist" : "To-Do",
-        itemData
-      )
+        itemData,
+      ),
     );
 
     deleteIcon.addEventListener("click", () =>
       DOMRenderer.renderDeleteItemDialog(
         itemData.todoId ? "Checklist" : "To-Do",
-        itemData
-      )
+        itemData,
+      ),
     );
 
     if (!itemData.todoId) iconContainer.appendChild(addIcon);

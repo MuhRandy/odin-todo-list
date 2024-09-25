@@ -105,10 +105,10 @@ dialog .box {
 .buttons button {
   padding: 5px 15px;
   border-radius: 5px;
-  -webkit-border-radius: ;
-  -moz-border-radius: ;
-  -ms-border-radius: ;
-  -o-border-radius: ;
+  -webkit-border-radius:;
+  -moz-border-radius:;
+  -ms-border-radius:;
+  -o-border-radius:;
   font-weight: bold;
   color: white;
 }

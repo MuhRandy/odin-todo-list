@@ -26,7 +26,7 @@ export default class ProjectManager {
 
   static getProject(id) {
     const targetProject = this.#projects.filter(
-      (project) => project.getId() === id
+      (project) => project.getId() === id,
     );
     Checker.isProjectExist(targetProject, id);
 
@@ -44,7 +44,7 @@ export default class ProjectManager {
 
   static getProjectsData() {
     return this.#projects.map((project) =>
-      this.getProjectData(project.getId())
+      this.getProjectData(project.getId()),
     );
   }
 

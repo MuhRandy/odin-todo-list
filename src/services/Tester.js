@@ -523,7 +523,7 @@ export default class Tester {
   static generateData() {
     const webDevelopmentProjectObj = this.getData()[0];
     const WDProject = ProjectManager.createProject(
-      webDevelopmentProjectObj.title
+      webDevelopmentProjectObj.title,
     );
 
     const WDProjectTodoManager = WDProject.getTodoManager();
@@ -531,7 +531,7 @@ export default class Tester {
     webDevelopmentProjectObj.todos.forEach((todo) => {
       const currentTodo = WDProjectTodoManager.createTodo(
         todo.title,
-        todo.description
+        todo.description,
       );
 
       currentTodo.setNotes(todo.notes);
@@ -575,7 +575,7 @@ export default class Tester {
 
     const checklistManager = ProjectFacade.getChecklistManager(
       checklistData.projectId,
-      checklistData.todoId
+      checklistData.todoId,
     );
     checklistManager.deleteChecklist(checklistData.id);
 
@@ -610,7 +610,7 @@ export default class Tester {
 
     const checklistManager = ProjectFacade.getChecklistManager(
       checklistData.projectId,
-      checklistData.todoId
+      checklistData.todoId,
     );
     // eslint-disable-next-line no-undef
     console.log(checklistManager.getChecklistData(checklistData.id));

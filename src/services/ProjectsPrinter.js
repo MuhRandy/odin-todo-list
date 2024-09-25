@@ -8,7 +8,7 @@ export default class ProjectsPrinter {
         console.log(
           `${i + 1}. ${todo.getTitle()} - ${todo.getPriority()} ${
             todo.isComplete() ? "✅" : "❎"
-          }`
+          }`,
         );
         // eslint-disable-next-line no-undef
         todo.getNotes() && console.log(`  Notes: ${todo.getNotes()}`);
@@ -21,7 +21,7 @@ export default class ProjectsPrinter {
           console.log(
             `    Checklist ${j + 1}: ${checklistItem.getTitle()} - ${
               checklistItem.isComplete() ? "✅" : "❎"
-            }`
+            }`,
           );
         });
       });
