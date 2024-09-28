@@ -64,7 +64,7 @@ export default class DOMRenderer {
   }
 
   static renderEditItemDialog(itemType, itemData) {
-    const editItemBox = DOMFactory.createEditItemBoxDialog(itemType, itemData);
+    const editItemBox = DOMFactory.createEditItemForm(itemType, itemData);
 
     this.#renderBoxDialog(editItemBox);
   }
@@ -79,7 +79,7 @@ export default class DOMRenderer {
   }
 
   static renderAddItemDialog(itemType, itemData = null) {
-    const addItemBox = DOMFactory.createAddItemBoxDialog(itemType, itemData);
+    const addItemBox = DOMFactory.createAddItemForm(itemType, itemData);
 
     this.#renderBoxDialog(addItemBox);
   }

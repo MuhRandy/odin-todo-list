@@ -4,6 +4,22 @@ import DOMRenderer from "./DOMRenderer";
 import ProjectFacade from "./ProjectFacade";
 
 export default class DOMFactory {
+  static #priorityOptions = [
+    {
+      text: "urgent",
+    },
+    {
+      text: "important",
+    },
+    {
+      text: "normal",
+      selected: true,
+    },
+    {
+      text: "low",
+    },
+  ];
+
   static createTodos(projectId) {
     const todosContainer = this.createContainer("todos");
     const todoManager = ProjectFacade.getTodoManager(projectId);
@@ -89,30 +105,14 @@ export default class DOMFactory {
     return checklistsContainer;
   }
 
-  static createAddItemBoxDialog(itemType, itemData = null) {
-    const box = this.createContainer("box");
+  static createAddItemForm(itemType, itemData = null) {
+    const form = this.#createFormDialog();
     // eslint-disable-next-line no-undef
     const heading = document.createElement("h1");
-    // eslint-disable-next-line no-undef
-    const title = document.createElement("input");
+    const title = this.#createTitleInput();
     // eslint-disable-next-line no-undef
     const description = document.createElement("textarea");
-    const priorityOptions = [
-      {
-        text: "urgent",
-      },
-      {
-        text: "important",
-      },
-      {
-        text: "normal",
-        selected: true,
-      },
-      {
-        text: "low",
-      },
-    ];
-    const priorityInput = this.#createSelectInput(priorityOptions);
+    const priorityInput = this.#createSelectInput(this.#priorityOptions);
     const priority = this.#createLabelWithContainer(
       "Priority :",
       "priority",
@@ -142,20 +142,20 @@ export default class DOMFactory {
     title.placeholder = `New ${itemType}`;
     description.placeholder = "description...";
 
-    box.appendChild(heading);
-    box.appendChild(title);
+    form.appendChild(heading);
+    form.appendChild(title);
     if (itemType === "To-Do") {
-      box.appendChild(description);
-      box.appendChild(priority);
-      box.appendChild(dueDate);
+      form.appendChild(description);
+      form.appendChild(priority);
+      form.appendChild(dueDate);
     }
-    box.appendChild(buttons);
+    form.appendChild(buttons);
 
-    return box;
+    return form;
   }
 
   static createDeleteItemBoxDialog(itemType, itemData) {
-    const box = this.createContainer("box");
+    const form = this.#createFormDialog();
     // eslint-disable-next-line no-undef
     const heading = document.createElement("h1");
     // eslint-disable-next-line no-undef
@@ -167,37 +167,21 @@ export default class DOMFactory {
     heading.textContent = `Delete ${itemType}?`;
     p.textContent = `${itemType} "${itemData.title}" will be permanently deleted`;
 
-    box.appendChild(heading);
-    box.appendChild(p);
-    box.appendChild(buttons);
+    form.appendChild(heading);
+    form.appendChild(p);
+    form.appendChild(buttons);
 
-    return box;
+    return form;
   }
 
-  static createEditItemBoxDialog(itemType, itemData) {
-    const box = this.createContainer("box");
+  static createEditItemForm(itemType, itemData) {
+    const form = this.#createFormDialog();
     // eslint-disable-next-line no-undef
     const heading = document.createElement("h1");
-    // eslint-disable-next-line no-undef
-    const titleInput = document.createElement("input");
+    const titleInput = this.#createTitleInput();
     // eslint-disable-next-line no-undef
     const descriptionInput = document.createElement("textarea");
-    const priorityOptions = [
-      {
-        text: "urgent",
-      },
-      {
-        text: "important",
-      },
-      {
-        text: "normal",
-        selected: true,
-      },
-      {
-        text: "low",
-      },
-    ];
-    const priorityInput = this.#createSelectInput(priorityOptions);
+    const priorityInput = this.#createSelectInput(this.#priorityOptions);
     const priority = this.#createLabelWithContainer(
       "Priority :",
       "priority",
@@ -228,16 +212,38 @@ export default class DOMFactory {
     priorityInput.value = itemData.priority;
     dueDateInput.value = itemData.dueDate;
 
-    box.appendChild(heading);
-    box.appendChild(titleInput);
+    form.appendChild(heading);
+    form.appendChild(titleInput);
     if (itemType === "To-Do") {
-      box.appendChild(descriptionInput);
-      box.appendChild(priority);
-      box.appendChild(dueDate);
+      form.appendChild(descriptionInput);
+      form.appendChild(priority);
+      form.appendChild(dueDate);
     }
-    box.appendChild(buttons);
+    form.appendChild(buttons);
 
-    return box;
+    return form;
+  }
+
+  static #createFormDialog() {
+    // eslint-disable-next-line no-undef
+    const form = document.createElement("form");
+
+    form.method = "dialog";
+
+    return form;
+  }
+
+  static #createTitleInput() {
+    // eslint-disable-next-line no-undef
+    const title = document.createElement("input");
+
+    title.required = true;
+
+    if (title.validity.valueMissing) {
+      title.setCustomValidity("Title required!");
+    }
+
+    return title;
   }
 
   static #createLabelWithContainer(text, htmlFor, inputElement) {

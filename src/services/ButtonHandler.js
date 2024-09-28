@@ -3,54 +3,57 @@ import ProjectFacade from "./ProjectFacade";
 import ProjectManager from "./ProjectManager";
 
 export default class ButtonHandler {
+  static #getForm() {
+    // eslint-disable-next-line no-undef
+    return document.querySelector("form");
+  }
+
   static addProject(inputData, itemType, itemData = null) {
-    // eslint-disable-next-line no-undef
-    console.log(inputData);
+    if (this.#getForm().checkValidity()) {
+      switch (itemType) {
+        case "Project": {
+          const newProject = ProjectManager.createProject(inputData.title);
 
-    // eslint-disable-next-line no-undef
-    if (inputData.title.length === 0) return console.log("Title required!");
+          this.#renderChange(newProject.getId());
 
-    switch (itemType) {
-      case "Project": {
-        const newProject = ProjectManager.createProject(inputData.title);
+          break;
+        }
 
-        this.#closeDialogAndRenderChange(newProject.getId());
+        case "To-Do": {
+          const todoManager = ProjectFacade.getTodoManager(itemData.id);
+          const newTodo = todoManager.createTodo(
+            inputData.title,
+            inputData.description,
+          );
 
-        break;
+          newTodo.setPriority(inputData.priority);
+          newTodo.setDueDate(inputData.dueDate);
+
+          this.#renderChange(newTodo.getProjectId());
+
+          break;
+        }
+
+        case "Checklist": {
+          const checklistManager = ProjectFacade.getChecklistManager(
+            itemData.projectId,
+            itemData.id,
+          );
+          // eslint-disable-next-line no-undef
+          console.log("masuk");
+
+          const newChecklist = checklistManager.addChecklistItem(
+            inputData.title,
+          );
+
+          this.#renderChange(newChecklist.getProjectId());
+
+          break;
+        }
+
+        default:
+          throw new Error(`item type ${itemType} not recognized`);
       }
-
-      case "To-Do": {
-        const todoManager = ProjectFacade.getTodoManager(itemData.id);
-        const newTodo = todoManager.createTodo(
-          inputData.title,
-          inputData.description,
-        );
-
-        newTodo.setPriority(inputData.priority);
-        newTodo.setDueDate(inputData.dueDate);
-
-        this.#closeDialogAndRenderChange(newTodo.getProjectId());
-
-        break;
-      }
-
-      case "Checklist": {
-        const checklistManager = ProjectFacade.getChecklistManager(
-          itemData.projectId,
-          itemData.id,
-        );
-        // eslint-disable-next-line no-undef
-        console.log("masuk");
-
-        const newChecklist = checklistManager.addChecklistItem(inputData.title);
-
-        this.#closeDialogAndRenderChange(newChecklist.getProjectId());
-
-        break;
-      }
-
-      default:
-        throw new Error(`item type ${itemType} not recognized`);
     }
   }
 
@@ -58,7 +61,7 @@ export default class ButtonHandler {
     if (!itemData.projectId) {
       ProjectManager.deleteProject(itemData.id);
 
-      this.#closeDialogAndRenderChange();
+      this.#renderChange();
     }
 
     if (!itemData.todoId && itemData.projectId) {
@@ -74,36 +77,36 @@ export default class ButtonHandler {
       checklistManager.deleteChecklist(itemData.id);
     }
 
-    this.#closeDialogAndRenderChange(itemData.projectId);
+    this.#renderChange(itemData.projectId);
   }
 
   static saveChange(inputData, itemData) {
-    if (!itemData.projectId) {
-      const project = ProjectManager.getProject(itemData.id);
-      project.setTitle(inputData.title);
-    }
+    if (this.#getForm().checkValidity()) {
+      if (!itemData.projectId) {
+        const project = ProjectManager.getProject(itemData.id);
+        project.setTitle(inputData.title);
+      }
 
-    if (!itemData.todoId && itemData.projectId) {
-      const todo = ProjectFacade.getTodoManager(itemData.projectId).getTodo(
-        itemData.id,
-      );
-      todo.setTitle(inputData.title);
-      todo.setDescription(inputData.description);
-      todo.setPriority(inputData.priority);
-      todo.setDueDate(inputData.dueDate);
-    }
+      if (!itemData.todoId && itemData.projectId) {
+        const todo = ProjectFacade.getTodoManager(itemData.projectId).getTodo(
+          itemData.id,
+        );
+        todo.setTitle(inputData.title);
+        todo.setDescription(inputData.description);
+        todo.setPriority(inputData.priority);
+        todo.setDueDate(inputData.dueDate);
+      }
 
-    if (itemData.todoId) {
-      const checklist = ProjectFacade.getChecklistManager(
-        itemData.projectId,
-        itemData.todoId,
-      ).getChecklist(itemData.id);
-      checklist.setTitle(inputData.title);
-    }
+      if (itemData.todoId) {
+        const checklist = ProjectFacade.getChecklistManager(
+          itemData.projectId,
+          itemData.todoId,
+        ).getChecklist(itemData.id);
+        checklist.setTitle(inputData.title);
+      }
 
-    this.#closeDialogAndRenderChange(
-      itemData.projectId ? itemData.projectId : itemData.id,
-    );
+      this.#renderChange(itemData.projectId ? itemData.projectId : itemData.id);
+    }
   }
 
   static toggleIsComplete(itemData) {
@@ -125,12 +128,7 @@ export default class ButtonHandler {
     }
   }
 
-  static #closeDialogAndRenderChange(projectId = null) {
-    // eslint-disable-next-line no-undef
-    const dialog = document.querySelector("dialog");
-
-    dialog.close();
-
+  static #renderChange(projectId = null) {
     DOMRenderer.renderProjectsList();
 
     if (!projectId) return;

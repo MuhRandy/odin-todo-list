@@ -51,7 +51,7 @@ dialog[open] {
   z-index: 1;
 }
 
-dialog .box {
+dialog form {
   background-color: #fff;
   padding: 25px;
   border-radius: 5px;
@@ -65,29 +65,29 @@ dialog .box {
   gap: 2px;
 }
 
-.box h1 {
+form h1 {
   font-size: 2.2rem;
 }
 
-.box > input {
+form > input {
   border: none;
   color: var(--primary);
   font-size: 2rem;
 }
 
-.box textarea {
+form textarea {
   border: none;
   color: var(--secondary);
   font: inherit;
   font-size: inherit;
 }
 
-.box div {
+form div {
   text-align: left;
   color: var(--secondary);
 }
 
-.box div :is(input, select) {
+form div :is(input, select) {
   color: var(--secondary);
   border: none;
   background-color: transparent;
