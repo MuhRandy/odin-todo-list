@@ -239,9 +239,7 @@ export default class DOMFactory {
 
     title.required = true;
 
-    if (title.validity.valueMissing) {
-      title.setCustomValidity("Title required!");
-    }
+    title.className = "title-input";
 
     return title;
   }

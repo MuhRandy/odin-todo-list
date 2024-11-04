@@ -9,6 +9,14 @@ export default class ButtonHandler {
   }
 
   static addProject(inputData, itemType, itemData = null) {
+    const titleInput = document.querySelector(".title-input");
+
+    if (titleInput.validity.valueMissing) {
+      titleInput.setCustomValidity("Title required!");
+    } else {
+      titleInput.setCustomValidity("");
+    }
+
     if (this.#getForm().checkValidity()) {
       switch (itemType) {
         case "Project": {
@@ -39,8 +47,6 @@ export default class ButtonHandler {
             itemData.projectId,
             itemData.id,
           );
-          // eslint-disable-next-line no-undef
-          console.log("masuk");
 
           const newChecklist = checklistManager.addChecklistItem(
             inputData.title,
