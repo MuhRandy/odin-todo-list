@@ -31,10 +31,30 @@ button {
   text-align: inherit;
   font-size: inherit;
   font-weight: inherit;
-
   padding: 0;
   background-color: inherit;
   border: none;
+  transition: transform 200ms;
+  -webkit-transition: transform 200ms;
+  -moz-transition: transform 200ms;
+  -ms-transition: transform 200ms;
+  -o-transition: transform 200ms;
+}
+
+button:has(.ti):hover {
+  transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  -moz-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  -o-transform: scale(1.1);
+}
+
+button:has(.ti + span):hover {
+  transform: scale(1.1) translateX(35px);
+  -webkit-transform: scale(1.1) translateX(35px);
+  -moz-transform: scale(1.1) translateX(35px);
+  -ms-transform: scale(1.1) translateX(35px);
+  -o-transform: scale(1.1) translateX(35px);
 }
 
 dialog[open] {
@@ -113,6 +133,14 @@ form div :is(input, select) {
   color: white;
 }
 
+.buttons button:hover {
+  transform: scale(1.05);
+  -webkit-transform: scale(1.05);
+  -moz-transform: scale(1.05);
+  -ms-transform: scale(1.05);
+  -o-transform: scale(1.05);
+}
+
 .cancel {
   border: 1px solid var(--primary);
   background-color: var(--primary);
@@ -166,6 +194,11 @@ h1,
   display: flex;
   align-items: start;
   position: relative;
+  transition: transform 200ms;
+  -webkit-transition: transform 200ms;
+  -moz-transition: transform 200ms;
+  -ms-transition: transform 200ms;
+  -o-transition: transform 200ms;
 }
 
 .aside ul li::before {
@@ -174,6 +207,14 @@ h1,
   margin-right: 5px;
   font-weight: normal;
   font-family: tabler-icons;
+}
+
+.aside ul li:hover {
+  transform: scale(1.1) translateX(10px);
+  -webkit-transform: scale(1.1) translateX(10px);
+  -moz-transform: scale(1.1) translateX(10px);
+  -ms-transform: scale(1.1) translateX(10px);
+  -o-transform: scale(1.1) translateX(10px);
 }
 
 .main {

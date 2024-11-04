@@ -9,6 +9,7 @@ export default class ButtonHandler {
   }
 
   static addProject(inputData, itemType, itemData = null) {
+    // eslint-disable-next-line no-undef
     const titleInput = document.querySelector(".title-input");
 
     if (titleInput.validity.valueMissing) {
